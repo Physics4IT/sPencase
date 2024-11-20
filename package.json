@@ -1,0 +1,23 @@
+{
+  "name": "spencase",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "setup": "npm install && npm install --prefix server && npm install --prefix client",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev",
+    
+    "docker:build": "docker-compose up --build",
+    "docker:up": "docker-compose up",
+    "docker:down": "docker-compose down"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
