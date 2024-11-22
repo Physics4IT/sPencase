@@ -1,0 +1,40 @@
+@keyframes logo-spin {
+    from {
+    transform: rotate(0deg);
+    }
+    to {
+    transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+    }
+}
+
+.web-name {
+    color: white;
+    font-weight: 750;
+    word-wrap: break-word;
+    @apply text-6xl;
+}
+
+.nav-text {
+    color: white;
+    font-weight: 100;
+    word-wrap: break-word;
+    @apply text-2xl;
+}
+
+.nav-btn {
+    @apply nav-text cursor-pointer hover:brightness-90;
+}
+
+.line-after {
+    @apply relative after:content-[''] after:absolute after:right-0 after:top-0 after:bottom-0 after:w-[0.5px] after:bg-slate-50;
+}
+
+.btn-main {
+    @apply w-48 text-2xl font-bold rounded-full p-7 text-[#306030] bg-[#31E02B] hover:text-[#CEE6D4] hover:bg-[#21701E];
+}

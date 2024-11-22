@@ -1,0 +1,61 @@
+.card-init {
+    @apply w-[30dvw] outline-none border-0;
+}
+
+.card {
+    @apply w-[30dvw] bg-[#359C38] bg-opacity-40 outline-none border-0;
+}
+
+.card-container {
+    @apply flex justify-center items-center;
+}
+
+.card-header-container {
+    @apply card-container pb-3 after-card-header;
+}
+
+.card-header {
+    @apply text-white font-bold font-serif text-4xl mt-4 pb-4;
+    font-size: 2rem;
+}
+
+.after-card-header {
+    @apply relative after:content-[''] after:absolute after:right-16 after:left-16 after:bottom-0 after:h-[2px] after:bg-slate-50;
+}
+
+.form-container {
+    @apply w-auto pl-8 mx-8;
+    @apply relative before:content-[''] before:absolute before:top-0 before:bottom-0 before:left-2 before:w-[2px] before:bg-slate-50;
+}
+
+.form-header {
+    color: white;
+    word-wrap: break-word;
+    @apply text-2xl font-extralight;
+}
+
+.form-value {
+    color: white;
+    word-wrap: break-word;
+    @apply text-3xl font-medium;
+}
+
+.btn-1 {
+    @apply w-64 text-xl font-bold rounded-full p-7 text-[#306030] bg-[#31E02B] hover:text-[#CEE6D4] hover:bg-[#022904];
+}
+
+.btn-logout {
+    @apply w-44 text-xl font-bold rounded-full p-7 text-[#306030] bg-[#31E02B] hover:text-[#CEE6D4] hover:bg-[#022904];
+}
+
+.btn-del {
+    @apply w-44 text-xl font-bold rounded-full p-7 text-[#654441] bg-[#d77065] hover:text-[#deb8b4] hover:bg-[#D11D09];
+}
+
+.btn-nav {
+    @apply w-12 flex justify-center rounded-3xl cursor-pointer bg-[#3FFF09] hover:bg-[#49a332];
+}
+
+.line-full-height {
+    @apply relative before:content-[''] before:absolute before:top-0 before:bottom-0 before:left-0 before:w-[1px] before:bg-slate-50;
+}
