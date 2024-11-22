@@ -128,3 +128,12 @@ body {
 .section {
     @apply w-auto flex mx-[15dvw];   
 }
+
+p::selection {
+    @apply bg-slate-300;
+}
+
+*:not(p)::selection {
+    user-select: none;
+    @apply bg-inherit;
+}

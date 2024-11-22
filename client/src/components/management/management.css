@@ -1,0 +1,68 @@
+.timer {
+    @apply text-white text-7xl font-serif font-bold;
+}
+
+.card-init {
+    @apply w-[30dvw] outline-none border-0;
+}
+
+.card {
+    @apply w-[30dvw] bg-[#359C38] bg-opacity-40 outline-none border-0;
+}
+
+.card-container {
+    @apply flex justify-center items-center;
+}
+
+.card-header {
+    @apply text-white font-bold font-sans text-4xl my-2 p-0;
+    font-size: 2rem;
+}
+
+.col-dir {
+    @apply flex flex-col;
+}
+
+.info-frame-col {
+    @apply w-auto mx-[10%] flex flex-col items-center border-2 border-white rounded-lg;
+}
+
+.info-frame-row {
+    @apply w-auto mx-[10%] flex flex-row items-center border-2 border-white rounded-lg;
+}
+
+.info-name {
+    @apply w-full h-[34%] text-white font-thin text-xl pl-4 pt-2;
+}
+
+.info-name-row {
+    @apply w-[80%] text-white font-thin text-xl pl-4 pt-3 pb-3 line-after;
+}
+
+.info-value {
+    @apply w-[20%] text-white text-center font-thin text-xl;
+}
+
+.info-actions {
+    @apply w-full h-[66%] flex flex-row items-center;
+}
+
+.info-action {
+    @apply h-full flex flex-col justify-center items-center;
+}
+
+.info-label {
+    @apply text-white font-black mb-2;
+}
+
+.info-switch {
+    @apply mt-1 data-[state=unchecked]:bg-slate-50 data-[state=checked]:bg-slate-50;
+}
+
+.line-after {
+    @apply relative after:content-[''] after:absolute after:top-2 after:bottom-2 after:right-0 after:w-[1px] after:bg-slate-50;
+}
+
+.bg-background {
+    @apply bg-black data-[state=checked]:bg-[#1DBF17];
+}
