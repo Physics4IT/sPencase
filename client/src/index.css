@@ -134,6 +134,7 @@ p::selection {
 }
 
 *:not(p)::selection {
+    -webkit-user-select: none;
     user-select: none;
     @apply bg-inherit;
 }

@@ -38,3 +38,39 @@
 .btn-main {
     @apply w-48 text-2xl font-bold rounded-full p-7 text-[#306030] bg-[#31E02B] hover:text-[#CEE6D4] hover:bg-[#21701E];
 }
+
+/* ABOUT PRODUCT */
+.overlay {
+    @apply w-full h-full z-50 absolute justify-center items-center top-0 left-0;
+    background-color: rgba(134, 239, 172, 0.4);
+    display: none;
+}
+
+.layer-container {
+    @apply flex flex-col justify-center rounded-xl bg-slate-50 z-[100] px-12;
+}
+
+.layer-header {
+    @apply text-zinc-800 text-4xl font-black break-words font-sans mb-4;
+}
+
+.layer-content {
+    @apply text-zinc-600 text-2xl font-thin break-words font-sans mb-4;
+}
+
+.layer-content-row {
+    @apply h-[50%] flex flex-row justify-center items-center mb-4;
+}
+
+.layer-item-avt {
+    @apply relative w-20 h-20 rounded-full overflow-hidden mb-4;
+}
+
+.layer-row-item {
+    @apply flex flex-col justify-center items-center w-[33.3%];
+}
+
+.layer-exit {
+    @apply text-slate-200 text-2xl font-thin break-words font-sans;
+    @apply w-32 h-10 flex justify-center items-center rounded-full bg-gray-500 hover:bg-gray-800 cursor-pointer;
+}
