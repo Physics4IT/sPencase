@@ -10,6 +10,7 @@ import bg_img from "../../assets/img/bg_img.jpg"
 import web_logo from "../../assets/img/logo.png"
 import { Switch } from "../ui/switch"
 import { Label } from "../ui/label"
+import { ArrowUpRight } from "lucide-react"
 
 function Management() {
     const nav = useNavigate()
@@ -58,8 +59,10 @@ function Management() {
                                         <Switch id="alarm" className="info-switch"></Switch>
                                     </div>
                                     <div className="info-action w-[50%]">
-                                        <Label htmlFor="alarmsttngs" className="info-label">Cài đặt báo thức</Label>
-                                        <Switch id="alarmsttngs" className="info-switch"/>
+                                        <Label className="info-label">Cài đặt</Label>
+                                        <div className="info-btn">
+                                            <ArrowUpRight />
+                                        </div>
                                     </div>
                                 </div>
                             </div>

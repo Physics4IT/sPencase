@@ -42,7 +42,7 @@ function AccountPage() {
                                 <p className="card-header">Chức năng</p>
                             </CardHeader>
                             <CardContent>
-                                <NavSection content="Quản lý thiết bị" navigatee="/" style="mb-4"/>
+                                <NavSection content="Quản lý thiết bị" navigatee="/management" style="mb-4"/>
                                 <NavSection content="Lịch sử dữ liệu" navigatee="/"/>
                             </CardContent>
                         </Card>

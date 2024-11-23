@@ -8,22 +8,22 @@ import AccountPage from "./components/account/AccountPage.tsx";
 import Management from "./components/management/Management.tsx";
 
 const router = createBrowserRouter([
-    // {
-    //     path: "/",
-    //     element: <Home />,
-    // },
+    {
+        path: "/",
+        element: <Home />,
+    },
     {
         path: "/account",
         element: <AccountPage />,
     },
-    // {
-    //     path: "/management",
-    //     element: <Management />,
-    // },
     {
-        path: "/",
+        path: "/management",
         element: <Management />,
     },
+    // {
+    //     path: "/",
+    //     element: <Management />,
+    // },
 ]);
 
 createRoot(document.getElementById('root')!).render(
