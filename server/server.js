@@ -15,8 +15,26 @@ connectDB();
 app.use(routes);
 
 // Start the Express server and store the HTTP server instance
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, async () => {
     console.log(`Server listening on port ${PORT}`);
+    try {
+        const response = await fetch('http://localhost:1880/process-data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: 'Server started' }),
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        else {
+            console.log('Server started message sent to Node-RED');
+        }
+    }
+    catch (e) {
+        console.error(e);
+    }
 });
 
 // Handle SIGTERM for graceful shutdown

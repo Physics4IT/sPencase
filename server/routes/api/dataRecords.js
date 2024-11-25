@@ -1,5 +1,5 @@
 import express from "express";
-import DataRecordModel from "../../models/DataRecord";
+import DataRecordModel from "../../models/DataRecord.js";
 
 const router = express.Router();
 

@@ -1,6 +1,5 @@
 import bcrypt from 'bcryptjs';
-import UserModel from '../models/User';
-import { verifyToken } from '../middlewares/auth';
+import UserModel from '../models/User.js';
 
 export const signup = async (req, res) => {
     const { username, email, password, phonenum } = req.body;

@@ -1,4 +1,4 @@
-import { Schema, Model } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const DataRecord = new Schema({
     received_at: Date,
@@ -9,6 +9,6 @@ const DataRecord = new Schema({
     light_intensity: Number
 });
 
-const DataRecordModel = Model('DataRecords', DataRecord);
+const DataRecordModel = model('DataRecords', DataRecord);
 
 export default DataRecordModel;

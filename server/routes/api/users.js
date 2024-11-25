@@ -10,3 +10,5 @@ router.get('/logout', logout);
 router.get('/me', verifyToken, (req, res) => {
     res.send(req.user);
 });
+
+export default router;
