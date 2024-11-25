@@ -35,6 +35,10 @@
     @apply relative after:content-[''] after:absolute after:right-0 after:top-0 after:bottom-0 after:w-[0.5px] after:bg-slate-50;
 }
 
+.vertical-line-after {
+    @apply relative after:content-[''] after:absolute after:right-0 after:top-0 after:bottom-0 after:w-[0.5px] after:bg-slate-50;
+}
+
 .btn-main {
     @apply w-48 text-2xl font-bold rounded-full p-7 text-[#306030] bg-[#31E02B] hover:text-[#CEE6D4] hover:bg-[#21701E];
 }

@@ -39,7 +39,7 @@ function Home() {
                 <div className="section h-[15dvh] flex-row justify-between items-center">
                     <img src={web_logo} alt="" className="web-logo" onClick={() => nav("/")}/>
                     <div className="flex flex-row justify-around items-center">
-                        <p className="nav-btn pr-8 line-after" onClick={() => handleShowPrdInfo()}>Về sPencase</p>
+                        <p className="nav-btn pr-8 vertical-line-after" onClick={() => handleShowPrdInfo()}>Về sPencase</p>
                         <p className="nav-btn pl-8" onClick={() => handleShowTeamInfo()}>Về chúng tôi</p>
                     </div>
                 </div>

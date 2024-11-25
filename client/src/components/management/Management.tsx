@@ -11,9 +11,24 @@ import web_logo from "../../assets/img/logo.png"
 import { Switch } from "../ui/switch"
 import { Label } from "../ui/label"
 import { ArrowUpRight } from "lucide-react"
+import { useEffect, useState } from "react"
 
 function Management() {
     const nav = useNavigate()
+
+    const [temperature, setTemperature] = useState(24)
+    const [humidity, setHumidity] = useState(40)
+    const [uv, setUv] = useState(0)
+    const [tilt, setTilt] = useState(1)
+    const [brightness, setBrightness] = useState(255)
+
+    useEffect(() => {
+        setTemperature(temperature)
+        setHumidity(humidity)
+        setUv(uv)
+        setTilt(tilt)
+        setBrightness(brightness)
+    }, [])
 
     return (
         <div className="overflow-hidden flex relative">
@@ -90,23 +105,23 @@ function Management() {
                         <CardContent className="flex flex-col justify-start p-0 h-[80%]">
                             <div className="info-frame-row h-14 mb-3">
                                 <p className="info-name-row">Nhiệt độ (C)</p>
-                                <p className="info-value">24</p>
+                                <p className="info-value">{temperature}</p>
                             </div>
                             <div className="info-frame-row h-14 my-3">
                                 <p className="info-name-row">Độ ẩm</p>
-                                <p className="info-value">40</p>
+                                <p className="info-value">{humidity}</p>
                             </div>
                             <div className="info-frame-row h-14 my-3">
                                 <p className="info-name-row">Cường độ UV</p>
-                                <p className="info-value">?</p>
+                                <p className="info-value">{uv}</p>
                             </div>
                             <div className="info-frame-row h-14 my-3">
                                 <p className="info-name-row">Độ nghiêng</p>
-                                <p className="info-value">1</p>
+                                <p className="info-value">{tilt}</p>
                             </div>
                             <div className="info-frame-row h-14 mt-3">
                                 <p className="info-name-row">Cường độ đèn</p>
-                                <p className="info-value">255</p>
+                                <p className="info-value">{brightness}</p>
                             </div>
                         </CardContent>
                     </Card>

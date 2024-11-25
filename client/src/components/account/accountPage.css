@@ -59,3 +59,45 @@
 .line-full-height {
     @apply relative before:content-[''] before:absolute before:top-0 before:bottom-0 before:left-0 before:w-[1px] before:bg-slate-50;
 }
+
+/* LAYER */
+.overlay {
+    @apply w-full h-full z-50 absolute justify-center items-center top-0 left-0;
+    background-color: rgba(134, 239, 172, 0.4);
+    display: none;
+}
+
+.layer-container {
+    @apply flex flex-col justify-center rounded-xl bg-slate-50 z-[100] px-12;
+}
+
+.layer-header {
+    @apply text-zinc-800 text-4xl font-black break-words font-sans mb-6;
+}
+
+.layer-info-cont {
+    @apply flex flex-col justify-center mb-4;
+}
+
+.layer-content {
+    @apply text-zinc-600 text-2xl font-thin break-words font-sans mb-2;
+}
+
+.layer-input {
+    @apply h-12 text-2xl font-thin;
+    background-color: white !important;
+}
+
+.layer-row {
+    @apply flex flex-row justify-center items-center mt-4;
+}
+
+.layer-exit {
+    @apply text-slate-200 text-2xl font-thin break-words font-sans;
+    @apply w-32 h-10 flex justify-center items-center rounded-full bg-gray-500 hover:bg-gray-800 cursor-pointer mr-4;
+}
+
+.layer-save {
+    @apply text-gray-700 text-2xl font-thin break-words font-sans;
+    @apply w-32 h-10 flex justify-center items-center rounded-full bg-green-300 hover:bg-green-600 cursor-pointer ml-4;
+}
