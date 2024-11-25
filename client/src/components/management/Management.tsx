@@ -22,6 +22,8 @@ function Management() {
     const [tilt, setTilt] = useState(1)
     const [brightness, setBrightness] = useState(255)
 
+    const [time, setTime] = useState<number>(Date.now())
+
     useEffect(() => {
         setTemperature(temperature)
         setHumidity(humidity)
@@ -29,6 +31,21 @@ function Management() {
         setTilt(tilt)
         setBrightness(brightness)
     }, [])
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTime(Date.now())
+        }, 1000);
+
+        return (() => clearInterval(interval))
+    }, [])
+
+    const parseTime = (timeStamp: number) => {
+        const hours = new Date(timeStamp).getHours();
+        const minutes = new Date(timeStamp).getMinutes();
+        const seconds = new Date(timeStamp).getSeconds();
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
 
     return (
         <div className="overflow-hidden flex relative">
@@ -39,7 +56,7 @@ function Management() {
                 </div>
 
                 <div className="section absolute h-[18dvh] flex-row justify-center items-end top-0 left-0 right-0 z-20">
-                    <p className="timer">12:05</p>
+                    <p className="timer">{parseTime(time)}</p>
                 </div>
 
                 <div className="section h-[85dvh] flex-row justify-center items-center">
