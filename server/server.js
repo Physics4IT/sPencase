@@ -2,9 +2,6 @@ import express from "express";
 import cors from "cors";
 import routes from "./routes/index.js";
 import connectDB from "./db/connection.js";
-import session from "express-session";
-import bodyParser from "body-parser";
-import passport from "passport";
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -15,19 +12,29 @@ app.use(express.urlencoded({ extended: true }));
 
 // Connect to MongoDB
 connectDB();
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false
-}));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(routes);
 
 // Start the Express server and store the HTTP server instance
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, async () => {
     console.log(`Server listening on port ${PORT}`);
+    try {
+        const response = await fetch('http://localhost:1880/process-data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: 'Server started' }),
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        else {
+            console.log('Server started message sent to Node-RED');
+        }
+    }
+    catch (e) {
+        console.error(e);
+    }
 });
 
 // Handle SIGTERM for graceful shutdown
