@@ -77,13 +77,14 @@ function AccountPage() {
                     </Card>
 
                     <div className="card-init flex flex-col justify-center h-4/5 ml-8 rounded-lg bg-none">
-                        <Card className="card h-2/5 mb-8">
+                        <Card className="card h-1/2 mb-8">
                             <CardHeader className="card-container">
                                 <p className="card-header">Chức năng</p>
                             </CardHeader>
                             <CardContent>
                                 <NavSection content="Quản lý thiết bị" navigatee="/management" style="mb-4"/>
-                                <NavSection content="Lịch sử dữ liệu" navigatee="/"/>
+                                <NavSection content="Lịch sử dữ liệu" navigatee="/" style="mb-4"/>
+                                <NavSection content="Số liệu thống kê" navigatee="/statistics"/>
                             </CardContent>
                         </Card>
 
@@ -119,8 +120,8 @@ function AccountPage() {
                     </div>
 
                     <div className="layer-row">
-                        <div className="layer-exit" onClick={() => handleHideChangeInfo()}>Thoát</div>
-                        <div className="layer-save" onClick={() => handleSaveInfo()}>Lưu</div>
+                        <div className="layer-acc-exit" onClick={() => handleHideChangeInfo()}>Thoát</div>
+                        <div className="layer-acc-save" onClick={() => handleSaveInfo()}>Lưu</div>
                     </div>
                 </div>
             </div>

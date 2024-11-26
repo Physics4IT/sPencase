@@ -58,7 +58,7 @@ function Home() {
             </div>
 
             <div id="layer-product-info" className="overlay">
-                <div className="layer-container w-[50%] h-[65dvh]">
+                <div className="layer-container w-[50%] h-[70dvh]">
                     <p className="layer-header">sPencase - Hộp bút thông minh</p>
                     <p className="layer-content">Trong môi trường hiện đại, nhu cầu tối ưu hóa không gian làm việc và quản lý thời gian hiệu quả ngày càng trở nên quan trọng. Sự ra đời của các sản phẩm thông minh đang dần hỗ trợ điều này tốt hơn, giúp người dùng không chỉ tiết kiệm thời gian mà còn kiểm soát được các yếu tố môi trường có thể ảnh hưởng đến sức khỏe và năng suất. Hộp bút thông minh ra đời với mục tiêu đáp ứng các nhu cầu trên, đặc biệt là cho học sinh - sinh viên và những người làm việc trong môi trường văn phòng, vốn là những nơi có yêu cầu cao về năng suất và sự thoải mái.</p>
                     <div className="layer-exit" onClick={() => handleHidePrdInfo()}>Thoát</div>

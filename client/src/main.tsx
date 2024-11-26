@@ -6,6 +6,7 @@ import './index.css'
 import Home from './components/onboard/Home.tsx'
 import AccountPage from "./components/account/AccountPage.tsx";
 import Management from "./components/management/Management.tsx";
+import DataStatistics from "./components/statistics/DataStatistics.tsx";
 
 const router = createBrowserRouter([
     {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
     {
         path: "/management",
         element: <Management />,
+    },
+    {
+        path: "/statistics",
+        element: <DataStatistics />,
     },
     // {
     //     path: "/",

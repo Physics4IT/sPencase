@@ -14,17 +14,13 @@
 }
 
 .web-name {
-    color: white;
     font-weight: 750;
     word-wrap: break-word;
-    @apply text-6xl;
+    @apply text-6xl text-white;
 }
 
 .nav-text {
-    color: white;
-    font-weight: 100;
-    word-wrap: break-word;
-    @apply text-2xl;
+    @apply text-2xl text-white font-thin break-words;
 }
 
 .nav-btn {
@@ -76,5 +72,5 @@
 
 .layer-exit {
     @apply text-slate-200 text-2xl font-thin break-words font-sans;
-    @apply w-32 h-10 flex justify-center items-center rounded-full bg-gray-500 hover:bg-gray-800 cursor-pointer;
+    @apply w-32 h-10 flex justify-center items-center rounded-full bg-gray-500 hover:bg-gray-800 cursor-pointer mt-4;
 }

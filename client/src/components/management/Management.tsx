@@ -1,17 +1,17 @@
 // React libraries
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { ArrowUpRight, ChevronRight } from "lucide-react"
 
 // SHADCN
 import { Card, CardContent, CardHeader } from "../ui/card"
+import { Switch } from "../ui/switch"
+import { Label } from "../ui/label"
 
 // Others
 import "./management.css"
 import bg_img from "../../assets/img/bg_img.jpg"
 import web_logo from "../../assets/img/logo.png"
-import { Switch } from "../ui/switch"
-import { Label } from "../ui/label"
-import { ArrowUpRight } from "lucide-react"
-import { useEffect, useState } from "react"
 
 function Management() {
     const nav = useNavigate()
@@ -51,8 +51,12 @@ function Management() {
         <div className="overflow-hidden flex relative">
             <img src={bg_img} alt="" className="web-bg"/>
             <div className="web-content relative">
-                <div className="section h-[15dvh] flex-row justify-start items-center">
+                <div className="section h-[15dvh] flex-row justify-between items-center">
                     <img src={web_logo} alt="" className="web-logo z-30" onClick={() => nav("/account")}/>
+                    <div className="nav-item-cont z-30" onClick={() => nav("/statistics")}>
+                        <p className="nav-item">Số liệu thống kê</p>
+                        <ChevronRight className="nav-icon"/>
+                    </div>
                 </div>
 
                 <div className="section absolute h-[18dvh] flex-row justify-center items-end top-0 left-0 right-0 z-20">
