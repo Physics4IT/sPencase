@@ -7,13 +7,15 @@ import web_logo from "../../assets/img/logo.png"
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function RegisterPage() {
     const nav = useNavigate()
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+
+    const inputRef = useRef<HTMLInputElement | null>(null)
 
     const handleRegister = async () => {
         const data = {
@@ -40,6 +42,12 @@ function RegisterPage() {
         }
     }
 
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus()
+        }
+    }, [])
+
     return (
         <div className="overflow-hidden flex relative">
             <img src={bg_img} alt="" className="web-bg-reverse"/>
@@ -55,7 +63,7 @@ function RegisterPage() {
                         </CardHeader>
                         <CardContent className="card-container-register-start h-[80%]">
                             <p className="info-name-register">Tên đăng nhập</p>
-                            <Input className="info-input-register" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="sPencase"/>
+                            <Input ref={inputRef} className="info-input-register" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="sPencase"/>
                             <p className="info-name-register">Email</p>
                             <Input className="info-input-register" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="example@gmail.com"/>
                             <p className="info-name-register">Mật khẩu</p>

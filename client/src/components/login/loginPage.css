@@ -20,7 +20,7 @@
 }
 
 .btn-login {
-    @apply w-32 text-xl font-bold rounded-full p-7 text-[#306030] bg-[#31E02B] hover:text-[#CEE6D4] hover:bg-[#022904];
+    @apply w-40 text-xl font-bold rounded-full p-7 text-[#306030] bg-[#31E02B] hover:text-[#CEE6D4] hover:bg-[#022904];
 }
 
 .info-input-login {

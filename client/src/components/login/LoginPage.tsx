@@ -7,12 +7,20 @@ import web_logo from "../../assets/img/logo.png"
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function LoginPage() {
     const nav = useNavigate()
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+
+    const inputRef = useRef<HTMLInputElement | null>(null)
+
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus()
+        }
+    }, [])
 
     const handleLogin = async () => {
         const data = {
@@ -52,7 +60,7 @@ function LoginPage() {
                         </CardHeader>
                         <CardContent className="card-container-login-start h-[75%]">
                             <p className="info-name-login">Tên đăng nhập</p>
-                            <Input className="info-input-login" placeholder="sPencase" value={username} onChange={(e) => setUsername(e.target.value)}/>
+                            <Input ref={inputRef} className="info-input-login" placeholder="sPencase" value={username} onChange={(e) => setUsername(e.target.value)}/>
                             <p className="info-name-login">Mật khẩu</p>
                             <Input className="info-input-login" placeholder="••••••••••" value={password} onChange={(e) => setPassword(e.target.value)} type="password"/>
                             <div className="flex flex-row justify-between">
