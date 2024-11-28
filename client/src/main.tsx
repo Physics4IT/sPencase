@@ -4,14 +4,25 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 
 import Home from './components/onboard/Home.tsx'
+import LoginPage from "./components/login/LoginPage.tsx";
+import RegisterPage from "./components/register/RegisterPage.tsx";
 import AccountPage from "./components/account/AccountPage.tsx";
 import Management from "./components/management/Management.tsx";
 import DataStatistics from "./components/statistics/DataStatistics.tsx";
+import HistoryPage from "./components/history/HistoryPage.tsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <Home />,
+    },
+    {
+        path: "/login",
+        element: <LoginPage />,
+    },
+    {
+        path: "/register",
+        element: <RegisterPage />,
     },
     {
         path: "/account",
@@ -25,10 +36,10 @@ const router = createBrowserRouter([
         path: "/statistics",
         element: <DataStatistics />,
     },
-    // {
-    //     path: "/",
-    //     element: <Management />,
-    // },
+    {
+        path: "/history",
+        element: <HistoryPage />,
+    }
 ]);
 
 createRoot(document.getElementById('root')!).render(

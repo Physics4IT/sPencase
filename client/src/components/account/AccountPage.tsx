@@ -1,6 +1,12 @@
+// React
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 // SHADCN
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { Button } from "../ui/button";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
 
 // Others
 import "./accountPage.css"
@@ -8,11 +14,10 @@ import bg_img from "../../assets/img/bg_img.jpg"
 import avatar from "../../assets/img/avatar.jpg"
 import InforForm from "./InforForm";
 import NavSection from "./NavSection";
-import { useEffect, useState } from "react";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
 
 function AccountPage() {
+    const nav = useNavigate()
+
     const [username, setUsername] = useState("sPencase")
     const [email, setEmail] = useState("spencase@gmail.com")
     const [phoneNum, setPhoneNum] = useState("0123456789")
@@ -42,6 +47,16 @@ function AccountPage() {
         if (layer) layer.style.display = "none"
     }
 
+    const handleShowLogout = () => {
+        const layer = document.getElementById("layer-logout")
+        if (layer) layer.style.display = "flex"
+    }
+
+    const handleHideLogout = () => {
+        const layer = document.getElementById("layer-logout")
+        if (layer) layer.style.display = "none"
+    }
+
     const handleSaveInfo = () => {
         if (tempName.trim() !== "" && tempName != username) setUsername(tempName)
         if (tempMail.trim() !== "" && tempMail != email) setEmail(tempMail)
@@ -49,6 +64,15 @@ function AccountPage() {
 
         const layer = document.getElementById("layer-account-info")
         if (layer) layer.style.display = "none"
+    }
+
+    const handleLogout = () => {
+        ///////////////////////////////////////
+
+        const layer = document.getElementById("layer-logout")
+        if (layer) layer.style.display = "none"
+
+        nav("/")
     }
 
     return (
@@ -83,17 +107,17 @@ function AccountPage() {
                             </CardHeader>
                             <CardContent>
                                 <NavSection content="Quản lý thiết bị" navigatee="/management" style="mb-4"/>
-                                <NavSection content="Lịch sử dữ liệu" navigatee="/" style="mb-4"/>
+                                <NavSection content="Lịch sử dữ liệu" navigatee="/history" style="mb-4"/>
                                 <NavSection content="Số liệu thống kê" navigatee="/statistics"/>
                             </CardContent>
                         </Card>
 
                         <Card className="card h-2/5 mt-8">
-                            <CardHeader className="card-container">
+                            <CardHeader className="card-container flex-[0.3]">
                                 <p className="card-header">Nâng cao</p>
                             </CardHeader>
-                            <CardContent className="flex flex-row justify-center">
-                                <Button className="btn-logout mr-4">Đăng xuất</Button>
+                            <CardContent className="flex flex-row justify-center items-center">
+                                <Button className="btn-logout mr-4" onClick={() => handleShowLogout()} >Đăng xuất</Button>
                                 <Button className="btn-del ml-4">Xóa tài khoản</Button>
                             </CardContent>
                         </Card>
@@ -122,6 +146,19 @@ function AccountPage() {
                     <div className="layer-row">
                         <div className="layer-acc-exit" onClick={() => handleHideChangeInfo()}>Thoát</div>
                         <div className="layer-acc-save" onClick={() => handleSaveInfo()}>Lưu</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="layer-logout" className="overlay">
+                <div className="layer-container w-[50%] h-[45dvh]">
+                    <p className="layer-header">Bạn có chắc chắn với sự lựa chọn này?</p>
+                    <p className="layer-content">Điều này sẽ đăng xuất tài khoản của bạn khỏi hệ thống sPencase.</p>
+                    <p className="layer-content">Đừng lo lắng, tài khoản của bạn sẽ không bị mất.</p>
+
+                    <div className="layer-row">
+                        <div className="layer-acc-exit mt-4" onClick={() => handleHideLogout()}>Hủy</div>
+                        <div className="layer-acc-save mt-4" onClick={() => handleLogout()}>Tiếp tục</div>
                     </div>
                 </div>
             </div>

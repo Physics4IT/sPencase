@@ -51,8 +51,8 @@ function Home() {
 
                 <div className="section h-[25dvh] flex-col justify-end">
                     <div className="w-full flex-row">
-                        <Button className="btn-main mr-4">Đăng nhập</Button>
-                        <Button className="btn-main ml-4">Đăng ký</Button>
+                        <Button className="btn-main mr-4" onClick={() => nav("/login")}>Đăng nhập</Button>
+                        <Button className="btn-main ml-4" onClick={() => nav("/register")}>Đăng ký</Button>
                     </div>
                 </div>
             </div>

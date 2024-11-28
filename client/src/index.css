@@ -130,7 +130,7 @@ body {
 }
 
 p::selection {
-    @apply bg-slate-300;
+    @apply bg-slate-300 text-slate-700;
 }
 
 *:not(p)::selection {

@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import clsx from "clsx"
 
 import {
     Card,
@@ -128,8 +129,9 @@ const chartConfig = {
 } satisfies ChartConfig
 
 function DataBarChart({
-    title = "",
-    desc = ""
+    title = "Bar chart",
+    desc = "Description",
+    styles = ""
 }) {
     const [activeChart, setActiveChart] = React.useState<keyof typeof chartConfig>("desktop")
 
@@ -138,8 +140,10 @@ function DataBarChart({
         mobile: chartData.reduce((acc, curr) => acc + curr.mobile, 0),
     }), [])
 
+    const newStyles = " " + styles
+
     return (
-        <Card>
+        <Card className={newStyles}>
             <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
                 <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
                     <CardTitle>{title}</CardTitle>
@@ -149,10 +153,10 @@ function DataBarChart({
                     {["desktop", "mobile"].map((key) => {
                         const chart = key as keyof typeof chartConfig
                         return (
-                            <button
+                            <div
                                 key={chart}
                                 data-active={activeChart === chart}
-                                className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
+                                className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6 cursor-pointer"
                                 onClick={() => setActiveChart(chart)}
                             >
                                 <span className="text-xs text-muted-foreground">
@@ -161,11 +165,12 @@ function DataBarChart({
                                 <span className="text-lg font-bold leading-none sm:text-3xl">
                                     {total[key as keyof typeof total].toLocaleString()}
                                 </span>
-                            </button>
+                            </div>
                         )
                     })}
                 </div>
             </CardHeader>
+            
             <CardContent className="px-2 sm:p-6">
                 <ChartContainer
                     config={chartConfig}
@@ -197,7 +202,7 @@ function DataBarChart({
                         <ChartTooltip
                             content={
                                 <ChartTooltipContent
-                                    className="w-[150px]"
+                                    className="w-[150px] bg-slate-50"
                                     nameKey="views"
                                     labelFormatter={(value) => {
                                         return new Date(value).toLocaleDateString("en-US", {
