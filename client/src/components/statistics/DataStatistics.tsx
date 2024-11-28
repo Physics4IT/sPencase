@@ -4,6 +4,8 @@ import web_logo from "../../assets/img/logo.png"
 import { useNavigate } from "react-router-dom";
 import DataLineChart from "./DataLineChart";
 
+import "./statistics.css"
+
 function DataStatistics() {
     const nav = useNavigate()
 
@@ -17,7 +19,22 @@ function DataStatistics() {
 
                 <div className="section h-auto mt-4 flex-col justify-center items-center">
                     <DataBarChart styles="h-[55dvh] w-[100%]"/>
-                    <DataLineChart />
+
+                    <div className="horizontal-div-line"/>
+
+                    <div className="chart-row-container">
+                        <DataLineChart styles="h-[50dvh] w-[45%]"/>
+                        <div className="vertical-div-line"/>
+                        <DataLineChart styles="h-[50dvh] w-[45%]"/>
+                    </div>
+
+                    <div className="horizontal-div-line"/>
+
+                    <div className="chart-row-container mb-12">
+                        <DataLineChart styles="h-[50dvh] w-[45%]"/>
+                        <div className="vertical-div-line"/>
+                        <DataLineChart styles="h-[50dvh] w-[45%]"/>
+                    </div>
                 </div>
             </div>
         </div>

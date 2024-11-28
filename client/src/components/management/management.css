@@ -82,3 +82,47 @@
 .bg-background {
     @apply bg-black data-[state=checked]:bg-[#1DBF17];
 }
+
+/* Alarm */
+.overlay {
+    @apply w-full h-full z-50 absolute justify-center items-center top-0 left-0;
+    background-color: rgba(134, 239, 172, 0.4);
+    display: none;
+}
+
+.layer-container {
+    @apply flex flex-col justify-center rounded-xl bg-slate-50 z-[100] px-12;
+}
+
+.layer-header {
+    @apply text-zinc-800 text-4xl font-black break-words font-sans mb-4;
+}
+
+
+.alarm-container {
+    @apply w-full border-2 rounded-lg flex flex-row justify-between;
+}
+
+.alarm-time {
+    @apply h-full flex flex-row justify-start;
+}
+
+.alarm-time-content {
+    @apply text-2xl font-thin text-white pl-4;
+}
+
+.alarm-button {
+    @apply h-full w-8;
+}
+
+.alarm-button-text {
+    @apply text-2xl font-thin text-white;
+}
+
+.alarm-delete {
+    @apply w-4 h-4 border-2 border-gray-800 rounded-full;
+}
+
+.alarm-icon {
+    @apply text-red-500 w-3 h-3;
+}

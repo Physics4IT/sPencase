@@ -1,7 +1,7 @@
 // React libraries
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { ArrowUpRight, ChevronRight } from "lucide-react"
+import { AlarmClockPlus, ArrowUpRight, ChevronRight, CircleMinus } from "lucide-react"
 
 // SHADCN
 import { Card, CardContent, CardHeader } from "../ui/card"
@@ -13,8 +13,19 @@ import "./management.css"
 import bg_img from "../../assets/img/bg_img.jpg"
 import web_logo from "../../assets/img/logo.png"
 
+type alarmData = {
+    _id?: string
+    hour: number
+    minute: number
+    state: boolean
+}
+
+type listAlarm = Array<alarmData> | null
+
 function Management() {
     const nav = useNavigate()
+    const [data, setData] = useState<listAlarm>(null)
+    const [reset, setReset] = useState<boolean>(false)
 
     const [temperature, setTemperature] = useState(24)
     const [humidity, setHumidity] = useState(40)
@@ -36,15 +47,83 @@ function Management() {
         const interval = setInterval(() => {
             setTime(Date.now())
         }, 1000);
-
+        
         return (() => clearInterval(interval))
     }, [])
+
+    useEffect(() => {
+        fetch("http://localhost:5000/api/alarms/")
+            .then(data => data.json())
+            .then(data => setData(data.body))
+            
+    }, [reset])
 
     const parseTime = (timeStamp: number) => {
         const hours = new Date(timeStamp).getHours();
         const minutes = new Date(timeStamp).getMinutes();
         const seconds = new Date(timeStamp).getSeconds();
         return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    const handleShowAlarm = () => {
+        const layer = document.getElementById("layer-alarm")
+        if (layer) layer.style.display = "flex"
+    }
+
+    const handleHideAlarm = () => {
+        const layer = document.getElementById("layer-alarm")
+        if (layer) layer.style.display = "none"
+    }
+
+    const handleAddAlarm = async () => {
+        const newData : listAlarm = data ? [...data] : []
+        newData.push({
+            hour: 0,
+            minute: 0,
+            state: false
+        })
+
+        newData.sort((a, b) => {
+            if (a.hour !== b.hour) {
+                return a.hour - b.hour
+            }
+            return a.minute - b.minute
+        })
+
+        await fetch("http://localhost:5000/api/alarms/", {
+            method: 'DELETE'
+        })
+
+        await fetch("http://localhost:5000/api/alarms/", {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newData)
+        })
+
+        setReset(!reset)
+    }
+
+    const handleDeleteAlarm = async (key: number) => {
+        if (data) {
+            const newData : listAlarm = [...data]
+            newData.splice(key, 1)
+
+            await fetch("http://localhost:5000/api/alarms/", {
+                method: 'DELETE'
+            })
+
+            await fetch("http://localhost:5000/api/alarms/", {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newData)
+            })
+    
+            setReset(!reset)
+        }
     }
 
     return (
@@ -97,7 +176,7 @@ function Management() {
                                     <div className="info-action w-[50%]">
                                         <Label className="info-label">Cài đặt</Label>
                                         <div className="info-btn">
-                                            <ArrowUpRight />
+                                            <ArrowUpRight onClick={() => handleShowAlarm()}/>
                                         </div>
                                     </div>
                                 </div>
@@ -146,6 +225,39 @@ function Management() {
                             </div>
                         </CardContent>
                     </Card>
+                </div>
+            </div>
+
+            <div id="layer-alarm" className="overlay">
+                <div className="layer-container w-[25%] h-[70dvh]">
+                    <div className="w-full flex flex-row justify-between items-center">
+                        <p className="layer-header">Báo thức</p>
+                        <AlarmClockPlus className="h-8 w-8 text-slate-700 hover:text-slate-400 cursor-pointer" onClick={() => handleAddAlarm()}/>
+                    </div>
+                    <div className={`w-full h-[70%] flex flex-col justify-start mt-2 ${data && 'overflow-y-scroll'}`}>
+                        {data?.map((value, key) => {
+                            return (
+                                <div key={key} className={`alarm-container ${value.state ? 'border-green-600' : 'border-zinc-800'}`}>
+                                    <div className="alarm-time">
+                                        <p className="alarm-time-content">{value.hour} : {value.minute}</p>
+                                    </div>
+                                    <div className="alarm-button">
+                                        <p className="alarm-button-text">{value.state? "Tắt" : "Bật"}</p>
+                                    </div>
+                                    <div className="alarm-delete">
+                                        <CircleMinus className="alarm-icon" onClick={() => handleDeleteAlarm(key)}/>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                        {!data && 
+                            <p className="text-2xl font-thin text-stone-700">Không có báo thức nào để hiển thị.</p>
+                        }
+                    </div>
+
+                    <div className="layer-row">
+                        <div className="layer-acc-exit" onClick={() => handleHideAlarm()}>Thoát</div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
-import clsx from "clsx"
 
 import {
     Card,
