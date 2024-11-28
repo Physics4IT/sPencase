@@ -19,7 +19,7 @@ import {
 
 export const description = "An interactive bar chart"
 
-const chartData = [
+const chartData : Record<string, any>[] = [
     { date: "2024-04-01", desktop: 222, mobile: 150 },
     { date: "2024-04-02", desktop: 97, mobile: 180 },
     { date: "2024-04-03", desktop: 167, mobile: 120 },
@@ -130,13 +130,16 @@ const chartConfig = {
 function DataBarChart({
     title = "Bar chart",
     desc = "Description",
-    styles = ""
+    styles = "",
+    data = [] as Record<string, any>[]
 }) {
-    const [activeChart, setActiveChart] = React.useState<keyof typeof chartConfig>("desktop")
+    data = chartData
+    const listKeys = data.length > 0 ? Object.keys(data[0]) : []
+    const [activeChart, setActiveChart] = React.useState<keyof typeof chartConfig>(listKeys[1] as keyof typeof chartConfig)
 
     const total = React.useMemo(() => ({
-        desktop: chartData.reduce((acc, curr) => acc + curr.desktop, 0),
-        mobile: chartData.reduce((acc, curr) => acc + curr.mobile, 0),
+        desktop: data.reduce((acc, curr) => acc + curr.desktop, 0),
+        mobile: data.reduce((acc, curr) => acc + curr.mobile, 0),
     }), [])
 
     const newStyles = " " + styles
@@ -177,7 +180,7 @@ function DataBarChart({
                 >
                     <BarChart
                         accessibilityLayer
-                        data={chartData}
+                        data={data}
                         margin={{
                             left: 12,
                             right: 12,

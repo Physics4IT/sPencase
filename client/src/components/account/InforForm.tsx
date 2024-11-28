@@ -11,7 +11,14 @@ function InforForm({
     return (
         <li className={formStyles}>
             <p className="form-header">{name}</p>
-            <p className="form-value">{value}</p>
+            <p className="form-value">
+                {value.length > 0 ? 
+                    value.length <= 20 ? 
+                        value 
+                        : value.substring(0, 20) + '...' 
+                    : 'Không có dữ liệu'
+                }
+            </p>
         </li>
     )
 }

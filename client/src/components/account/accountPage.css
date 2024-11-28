@@ -37,7 +37,7 @@
 .form-value {
     color: white;
     word-wrap: break-word;
-    @apply text-3xl font-medium;
+    @apply text-2xl font-medium;
 }
 
 .btn-1 {
