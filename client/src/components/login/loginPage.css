@@ -1,0 +1,29 @@
+.card {
+    @apply w-[30dvw] bg-[#359C38] bg-opacity-40 outline-none border-0;
+}
+
+.card-container-login-start {
+    @apply flex flex-col justify-start;
+}
+
+.card-container-login-center {
+    @apply flex flex-col justify-end items-center;
+}
+
+.card-header {
+    @apply text-white font-bold font-sans text-4xl my-2 p-0;
+    font-size: 2rem;
+}
+
+.info-name-login {
+    @apply w-full text-white font-thin text-2xl mb-2;
+}
+
+.btn-login {
+    @apply w-32 text-xl font-bold rounded-full p-7 text-[#306030] bg-[#31E02B] hover:text-[#CEE6D4] hover:bg-[#022904];
+}
+
+.info-input-login {
+    @apply text-2xl h-12 font-thin mb-4;
+    background-color: white !important;
+}

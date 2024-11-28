@@ -4,12 +4,12 @@ import DataRecordModel from "../../models/DataRecord.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-    const dataRecords = await DataRecordModel.find();
+    const dataRecords = await DataRecordModel.find({}, { __v: 0 });
     res.json(dataRecords).status(200);
 });
 
 router.get("/:id", async (req, res) => {
-    const dataRecord = await DataRecordModel.find({ _id: ObjectId(req.params.id) });
+    const dataRecord = await DataRecordModel.find({ _id: ObjectId(req.params.id) }, { __v: 0 });
     if (!dataRecord) res.send("Not found").status(404);
     else res.json(dataRecord).status(200);
 });
