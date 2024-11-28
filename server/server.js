@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import routes from "./routes/index.js";
 import connectDB from "./db/connection.js";
+import cookieParser from "cookie-parser";
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Connect to MongoDB
 connectDB();
+app.use(cookieParser());
 app.use(routes);
 
 // Start the Express server and store the HTTP server instance

@@ -27,10 +27,19 @@ function AccountPage() {
     const [tempPhone, setTempPhone] = useState(phoneNum)
 
     useEffect(() => {
-        // //////////////////////////////////////////////
-        setUsername(username)
-        setEmail(email)
-        setPhoneNum(phoneNum)
+        fetch("http://localhost:5000/api/users/account", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => response.json())
+            .then(data => data.body.user)
+            .then(body => {
+                setUsername(body.username)
+                setEmail(body.email)
+                setPhoneNum(body.phonenum)
+            })
     }, [])
 
     const handleShowChangeInfo = () => {

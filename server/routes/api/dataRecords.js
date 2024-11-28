@@ -1,5 +1,6 @@
 import express from "express";
 import DataRecordModel from "../../models/DataRecord.js";
+import { ObjectId } from "mongodb";
 
 const router = express.Router();
 
@@ -9,7 +10,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-    const dataRecord = await DataRecordModel.find({ _id: ObjectId(req.params.id) }, { __v: 0 });
+    const dataRecord = await DataRecordModel.find({ _id: req.params.id }, { __v: 0 });
     if (!dataRecord) res.send("Not found").status(404);
     else res.json(dataRecord).status(200);
 });
@@ -34,7 +35,7 @@ router.post("/", async (req, res) => {
 
 router.patch("/:id", async (req, res) => {
     try {
-        const query = { _id: ObjectId(req.params.id) };
+        const query = { _id: req.params.id };
         const updates = {
             $set: {
                 received_at: req.body.received_at,
@@ -56,7 +57,7 @@ router.patch("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
     try {
-        const query = { _id: ObjectId(req.params.id) };
+        const query = { _id: req.params.id };
         const dataRecord = await DataRecordModel.deleteOne(query);
         res.json(dataRecord).status(200);
     } catch (err) {

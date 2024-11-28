@@ -49,7 +49,12 @@ export const login = async (req, res) => {
         const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET, {
             expiresIn: 86400 // 24 hours
         });
-        res.header("x-access-token", token).status(200).json({ message: "Login successful", user, token });
+        res.cookie("x-access-token", token, {
+            maxAge: 86400 * 1000, // 24 hours
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict"
+        }).status(200).json({ message: "Login successful", user, token });
     }
     catch (err) {
         console.error(err);
