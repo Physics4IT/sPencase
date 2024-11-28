@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-    const dataRecord = await DataRecordModel.find({ id: ObjectId(req.params.id) });
+    const dataRecord = await DataRecordModel.find({ _id: ObjectId(req.params.id) });
     if (!dataRecord) res.send("Not found").status(404);
     else res.json(dataRecord).status(200);
 });
