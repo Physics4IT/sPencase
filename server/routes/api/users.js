@@ -11,7 +11,7 @@ router.post('/login', login);
 router.get('/logout', logout);
 router.get('/me', verifyToken, async (req, res) => {
     const user = await UserModel.findById(req.userId, { _id: 0, password: 0, __v: 0 });
-    res.json(user);
+    res.status(200).json(user);
 });
 
 export default router;

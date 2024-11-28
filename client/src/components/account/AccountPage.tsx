@@ -27,19 +27,32 @@ function AccountPage() {
     const [tempPhone, setTempPhone] = useState(phoneNum)
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/users/account", {
+        fetch("http://localhost:5000/api/users/me", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
-            }
+            },
+            credentials: "include"
         })
-            .then(response => response.json())
-            .then(data => data.body.user)
-            .then(body => {
-                setUsername(body.username)
-                setEmail(body.email)
-                setPhoneNum(body.phonenum)
+            .then(response => {
+                if (response.ok) {
+                    console.log("Response: ", response)
+                    return response.json()
+                }
+                throw new Error("Network response was not ok")
             })
+            .catch(error => console.error("Error: ", error))
+            .then(data => {
+                setUsername(data.username)
+                setEmail(data.email)
+                setPhoneNum(data.phonenum)
+            })
+            // .then(data => data.user)
+            // .then(body => {
+            //     setUsername(body.username)
+            //     setEmail(body.email)
+            //     setPhoneNum(body.phonenum)
+            // })
     }, [])
 
     const handleShowChangeInfo = () => {
