@@ -1,6 +1,7 @@
 // React
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import emailjs from "@emailjs/browser";
 
 // SHADCN
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
@@ -17,6 +18,9 @@ import NavSection from "./NavSection";
 
 function AccountPage() {
     const nav = useNavigate()
+    const service_id : string = import.meta.env.VITE_SERVICE_ID || ''
+    const template_id : string = import.meta.env.VITE_TEMPLATE_ID || ''
+    const options : string = import.meta.env.VITE_OPTIONS || ''
 
     const [username, setUsername] = useState("sPencase")
     const [email, setEmail] = useState("spencase@gmail.com")
@@ -81,7 +85,23 @@ function AccountPage() {
 
     const handleSaveInfo = () => {
         if (tempName.trim() !== "" && tempName != username) setUsername(tempName)
-        if (tempMail.trim() !== "" && tempMail != email) setEmail(tempMail)
+        if (tempMail.trim() !== "" && tempMail != email) {
+            emailjs.send(service_id, template_id, 
+                {
+                    title: 'New message',
+                    mailto: 'daongocthien719@gmail.com',
+                    message: 'New message'
+                }, options
+            )
+            .then(() => {
+                console.log("Email sent successfully!")
+            })
+            .catch((error) => {
+                console.error("Error sending email:", error)
+            })
+
+            setEmail(tempMail)
+        }
         if (tempPhone.trim() !== "" && tempPhone != phoneNum) setPhoneNum(tempPhone)
 
         const layer = document.getElementById("layer-account-info")
