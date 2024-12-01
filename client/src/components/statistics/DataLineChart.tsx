@@ -2,40 +2,17 @@
 
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
 
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import {
-    ChartConfig,
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-} from "@/components/ui/chart"
-const chartData = [
-    { month: "January", desktop: 186 },
-    { month: "February", desktop: 305 },
-    { month: "March", desktop: 237 },
-    { month: "April", desktop: 73 },
-    { month: "May", desktop: 209 },
-    { month: "June", desktop: 214 },
-]
-
-const chartConfig = {
-    desktop: {
-        label: "Desktop",
-        color: "hsl(var(--chart-1))",
-    },
-} satisfies ChartConfig
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 
 function DataLineChart({
     title = "Line chart",
     desc = "Description",
-    styles = ""
+    styles = "",
+    data = [] as Record<string, any>[],
+    config = {} as ChartConfig
 }) {
+    const key = data.length > 0 ? Object.keys(data[0]) : []
     const newStyles = " " + styles
 
     return (
@@ -45,18 +22,18 @@ function DataLineChart({
                 <CardDescription>{desc}</CardDescription>
             </CardHeader>
             <CardContent>
-                <ChartContainer config={chartConfig}>
+                <ChartContainer config={config}>
                     <LineChart
                         accessibilityLayer
-                        data={chartData}
+                        data={data}
                         margin={{
                             left: 12,
                             right: 12,
                         }}
                     >
-                        <CartesianGrid vertical={false} />
+                        <CartesianGrid vertical={false}/>
                         <XAxis
-                            dataKey="month"
+                            dataKey={key[0]}
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}
@@ -67,7 +44,7 @@ function DataLineChart({
                             content={<ChartTooltipContent hideLabel className="bg-slate-50"/>}
                         />
                         <Line
-                            dataKey="desktop"
+                            dataKey={key[1]}
                             type="natural"
                             stroke="var(--color-desktop)"
                             strokeWidth={2}
