@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import SessionModel from '../models/Session.js';
 
 export const verifyToken = (req, res, next) => {
     const token = req.cookies['x-access-token'];
@@ -6,6 +7,13 @@ export const verifyToken = (req, res, next) => {
     if (!token) {
         return res.status(403).send({
             message: 'No token provided!'
+        });
+    }
+
+    const session = SessionModel.findOne({ token: token });
+    if (!session) {
+        return res.status(403).send({
+            message: 'Unauthorized!'
         });
     }
 

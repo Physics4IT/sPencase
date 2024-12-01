@@ -9,6 +9,4 @@ const DataRecord = new Schema({
     light_intensity: Number
 });
 
-const DataRecordModel = model('DataRecords', DataRecord);
-
-export default DataRecordModel;
+export default model('DataRecords', DataRecord);

@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import UserModel from '../models/User.js';
 import jwt from 'jsonwebtoken';
+import SessionModel from '../models/Session.js';
 
 export const signup = async (req, res) => {
     const { username, email, password, phonenum } = req.body;
@@ -55,6 +56,12 @@ export const login = async (req, res) => {
             secure: process.env.NODE_ENV === 'production',
             sameSite: "lax"
         }).status(200).json({ message: "Login successful", user, token });
+
+        const session = new SessionModel({
+            user_id: user._id,
+            token
+        });
+        await session.save();
     }
     catch (err) {
         console.error(err);
@@ -64,10 +71,10 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
-        const token = req.headers["x-access-token"];
+        const token = req.cookies["x-access-token"];
         const decoded = jwt.decode(token);
 
-        await Session.deleteOne({ user_id: decoded.id });
+        await SessionModel.deleteOne({ user_id: decoded.id });
         res.status(200).send("Logout successful");
     }
     catch (err) {

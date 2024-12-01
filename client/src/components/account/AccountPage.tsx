@@ -90,6 +90,24 @@ function AccountPage() {
 
     const handleLogout = () => {
         ///////////////////////////////////////
+        fetch("http://localhost:5000/api/users/logout", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include"
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Response: ", response)
+                    return response.json()
+                }
+                throw new Error("Network response was not ok")
+            })
+            .catch(error => console.error("Error: ", error))
+            .then(data => {
+                console.log(data)
+            })
 
         const layer = document.getElementById("layer-logout")
         if (layer) layer.style.display = "none"
