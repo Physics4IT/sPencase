@@ -26,6 +26,7 @@ function Management() {
     const nav = useNavigate()
     const [data, setData] = useState<listAlarm>(null)
     const [reset, setReset] = useState<boolean>(false)
+    const [sendData, setSendData] = useState<boolean>(false)
 
     const [temperature, setTemperature] = useState(24)
     const [humidity, setHumidity] = useState(40)
@@ -51,12 +52,120 @@ function Management() {
         return (() => clearInterval(interval))
     }, [])
 
-    useEffect(() => {
-        fetch("http://localhost:5000/api/alarms/")
-            .then(data => data.json())
-            .then(data => setData(data.body))
+    // useEffect(() => {
+    //     fetch("http://localhost:5000/api/alarms/")
+    //         .then(data => data.json())
+    //         .then(data => setData(data.body))
             
-    }, [reset])
+    // }, [reset])
+
+    useEffect(() => {
+        const intervalGetData = setInterval(() => {
+            fetch('http://127.0.0.1:1880/data', {method: 'GET'})
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => console.error('Error:', error));
+        }, 5000);
+
+        return () => {
+            clearInterval(intervalGetData)
+        }
+    }, [])
+
+    const [rgbMsg, setRgbMsg] = useState<boolean | undefined>(false)
+    const [neopixelMsg, setNeopixelMsg] = useState<boolean | undefined>(false)
+    const [servoMsg, setServoMsg] = useState<boolean | undefined>(false)
+    const [sevenSegmentMsg, setSevenSegmentMsg] = useState<boolean | undefined>(false)
+    const [buzzerMsg, setBuzzerMsg] = useState<boolean | undefined>(false)
+    const [lcdMsg, setLcdMsg] = useState<boolean | undefined>(false)
+    const [vibrationMsg, setVibrationMsg] = useState<boolean | undefined>(false)
+    const [buttonMsg, setButtonMsg] = useState<boolean | undefined>(false)
+    const [phoneMsg, setPhoneMsg] = useState<boolean | undefined>(false)
+    const [topicMsg, setTopicMsg] = useState<string>("")
+
+    useEffect(() => {
+        if (sendData) {
+            let bodyData;
+
+            switch (topicMsg) {
+                case "rgb":
+                    bodyData = {
+                        topic: "sub/rgb",
+                        payload: rgbMsg ? "on" : "off"
+                    }
+                    break
+
+                case "neopixel":
+                    bodyData = {
+                        topic: "sub/neopixel",
+                        payload: neopixelMsg ? "on" : "off"
+                    }
+                    break
+
+                case "servo":
+                    bodyData = {
+                        topic: "sub/servo",
+                        payload: servoMsg
+                    }
+                    break
+
+                case "sevenSegment":
+                    bodyData = {
+                        topic: "sub/sevenSegment",
+                        payload: sevenSegmentMsg
+                    }
+                    break
+
+                case "buzzer":
+                    bodyData = {
+                        topic: "sub/buzzer",
+                        payload: buzzerMsg
+                    }
+                    break
+
+                case "lcd":
+                    bodyData = {
+                        topic: "sub/lcd",
+                        payload: lcdMsg ? "3 on" : "3 off"
+                    }
+                    break
+
+                case "vibration":
+                    bodyData = {
+                        topic: "sub/vibration",
+                        payload: vibrationMsg
+                    }
+                    break
+
+                case "button":
+                    bodyData = {
+                        topic: "sub/button",
+                        payload: buttonMsg ? "clicked" : "not clicked"
+                    }
+                    break
+
+                case "phone":
+                    bodyData = {
+                        topic: "phoneMsg",
+                        payload: phoneMsg
+                    }
+            }
+
+            fetch('http://127.0.0.1:1880/receiveData', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(bodyData)
+            })
+            .then(response => response.text())
+            .then(result => {console.log('Success: ', result)})
+            .catch(error => {console.log('Error: ', error)})
+            setSendData(false)
+        }
+    }, [sendData, topicMsg])
 
     const parseTime = (timeStamp: number) => {
         const hours = new Date(timeStamp).getHours();
@@ -153,15 +262,33 @@ function Management() {
                                 <div className="info-actions">
                                     <div className="info-action w-[33%] line-after">
                                         <Label htmlFor="rgb" className="info-label">RGB</Label>
-                                        <Switch id="rgb" className="info-switch"></Switch>
+                                        <Switch id="rgb" className="info-switch" checked={rgbMsg} 
+                                            onCheckedChange={(e) => {
+                                                setRgbMsg(e)
+                                                setTopicMsg("rgb")
+                                                setSendData(true)
+                                            }}
+                                        />
                                     </div>
                                     <div className="info-action w-[33%] line-after">
                                         <Label htmlFor="neopixel" className="info-label">Neopixel</Label>
-                                        <Switch id="neopixel" className="info-switch"/>
+                                        <Switch id="neopixel" className="info-switch" checked={neopixelMsg}
+                                            onCheckedChange={(e) => {
+                                                setNeopixelMsg(e)
+                                                setTopicMsg("neopixel")
+                                                setSendData(true)
+                                            }}
+                                        />
                                     </div>
                                     <div className="info-action w-[33%]">
                                         <Label htmlFor="lcd" className="info-label">LCD</Label>
-                                        <Switch id="lcd" className="info-switch"/>
+                                        <Switch id="lcd" className="info-switch" checked={lcdMsg}
+                                            onCheckedChange={(e) => {
+                                                setLcdMsg(e)
+                                                setTopicMsg("lcd")
+                                                setSendData(true)
+                                            }}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -171,7 +298,7 @@ function Management() {
                                 <div className="info-actions">
                                     <div className="info-action w-[50%] line-after">
                                         <Label htmlFor="alarm" className="info-label">Báo thức</Label>
-                                        <Switch id="alarm" className="info-switch"></Switch>
+                                        <Switch id="alarm" className="info-switch"/>
                                     </div>
                                     <div className="info-action w-[50%]">
                                         <Label className="info-label">Cài đặt</Label>
@@ -187,7 +314,7 @@ function Management() {
                                 <div className="info-actions">
                                     <div className="info-action w-[50%] line-after">
                                         <Label htmlFor="auto" className="info-label">Tự động đóng mở</Label>
-                                        <Switch id="auto" className="info-switch"></Switch>
+                                        <Switch id="auto" className="info-switch"/>
                                     </div>
                                     <div className="info-action w-[50%]">
                                         <Label htmlFor="vibrate" className="info-label">Rung</Label>
