@@ -7,3 +7,4 @@ Adafruit NeoPixel
 LiquidCrystal I2C
 PubSubClient
 WiFi
+DHT sensor library
