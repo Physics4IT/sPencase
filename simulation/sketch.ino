@@ -40,8 +40,10 @@ void setup()
   setNeopixel();
   setLcd();
   setBuzzer();
+  setButton();
   setDHT();
   setUltrasonic();
+  // setTiltSensor();
 
   client.setServer(mqtt_broker, port);
   // client.setServer(mqttServer, port);
@@ -149,14 +151,16 @@ void loop()
 
   String buffer_dht = readDHT();
   String buffer_ultrasonic = readUltrasonic();
-  String btnState = "1";
+  // String buffer_tilt = readTiltSensor();
+  String btnState = readButton();
+  // printTiltSensor();
 
   // client.publish("pub/potentiometer", buffer);
-  if (readButton() == 1) client.publish("pub/button", btnState.c_str());
+  client.publish("pub/button", btnState.c_str());
   // client.publish("pub/photoresistor", buffer);
   client.publish("pub/dht", buffer_dht.c_str());
   // client.publish("pub/uvSensor", buffer);
-  // client.publish("pub/tiltSensor", buffer);
+  // client.publish("pub/tiltSensor", buffer_tilt.c_str());
   client.publish("pub/ultrasonicSensor", buffer_ultrasonic.c_str());
 
   delay(500);

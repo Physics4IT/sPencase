@@ -51,7 +51,7 @@
       "id": "dht1",
       "top": 77.1,
       "left": -149.4,
-      "attrs": { "temperature": "-8.3", "humidity": "61.5" }
+      "attrs": { "temperature": "36.3", "humidity": "45.5" }
     },
     {
       "type": "wokwi-hc-sr04",
@@ -75,6 +75,14 @@
       "left": 297.05,
       "rotate": 90,
       "attrs": { "value": "1000" }
+    },
+    { "type": "wokwi-mpu6050", "id": "imu1", "top": 186.22, "left": -458.48, "attrs": {} },
+    {
+      "type": "wokwi-tm1637-7segment",
+      "id": "sevseg1",
+      "top": 268.76,
+      "left": -607.37,
+      "attrs": { "color": "red" }
     }
   ],
   "connections": [
@@ -122,11 +130,16 @@
     [ "esp:GND.2", "bb3:tn.25", "black", [ "v0", "h9.6" ] ],
     [ "dht1:VCC", "bb3:tp.1", "red", [ "h-115.2", "v249.6", "h68" ] ],
     [ "dht1:GND", "bb3:tn.1", "black", [ "v9.6", "h-134.4", "v278.5" ] ],
-    [ "dht1:SDA", "bb5:11t.a", "green", [ "h0.1", "v19.2", "h-28.8" ] ],
     [ "ultrasonic1:GND", "bb3:tn.2", "black", [ "v9.6", "h-222", "v470.4", "h96.8" ] ],
     [ "ultrasonic1:VCC", "bb3:tp.2", "red", [ "h-201.6", "v422.4", "h125.6" ] ],
     [ "ultrasonic1:TRIG", "bb5:12t.a", "green", [ "v201.6", "h-48.4" ] ],
-    [ "ultrasonic1:ECHO", "bb5:13t.a", "green", [ "v211.2", "h-48.8" ] ],
+    [ "r2:1", "bb1:18b.h", "black", [ "h0" ] ],
+    [ "bb4:12t.a", "bb1:18b.j", "green", [ "v-172.8", "h9.6" ] ],
+    [ "bb1:16b.j", "bb1:bp.12", "red", [ "v0" ] ],
+    [ "imu1:VCC", "bb3:tp.3", "red", [ "v0", "h19.28", "v230.4", "h201.6" ] ],
+    [ "imu1:GND", "bb3:tn.3", "black", [ "v-9.6", "h38.48", "v316.8", "h192" ] ],
+    [ "imu1:SDA", "bb5:8b.f", "green", [ "v115.2", "h0.08" ] ],
+    [ "imu1:SCL", "bb5:10b.f", "green", [ "v105.6", "h268.88" ] ],
     [ "ring1:GND", "bb1:45t.a", "", [ "$bb" ] ],
     [ "ring1:VCC", "bb1:46t.a", "", [ "$bb" ] ],
     [ "ring1:DIN", "bb1:47t.a", "", [ "$bb" ] ],
@@ -145,9 +158,8 @@
     [ "btn1:2.r", "bb1:16b.f", "", [ "$bb" ] ],
     [ "r2:1", "bb1:22b.h", "", [ "$bb" ] ],
     [ "r2:2", "bb1:bn.17", "", [ "$bb" ] ],
-    [ "r2:1", "bb1:18b.h", "black", [ "h0" ] ],
-    [ "bb4:12t.a", "bb1:18b.j", "green", [ "v-172.8", "h9.6" ] ],
-    [ "bb1:16b.j", "bb1:bp.12", "red", [ "v0" ] ]
+    [ "dht1:SDA", "bb5:11t.a", "green", [ "v0" ] ],
+    [ "ultrasonic1:ECHO", "bb5:13t.a", "green", [ "v211.2", "h-48.8" ] ]
   ],
   "dependencies": {}
 }
