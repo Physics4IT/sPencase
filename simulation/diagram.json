@@ -50,8 +50,8 @@
     {
       "type": "wokwi-dht22",
       "id": "dht1",
-      "top": 77.1,
-      "left": -149.4,
+      "top": 86.7,
+      "left": -178.2,
       "attrs": { "temperature": "-8.3", "humidity": "61.5" }
     },
     {
@@ -117,7 +117,14 @@
       "attrs": { "color": "lime" }
     },
     { "type": "chip-uv-sensor", "id": "chip1", "top": 884.22, "left": -417.6, "attrs": {} },
-    { "type": "wokwi-mpu6050", "id": "imu1", "top": 71.02, "left": -16.88, "attrs": {} }
+    { "type": "wokwi-mpu6050", "id": "imu1", "top": 71.02, "left": -16.88, "attrs": {} },
+    {
+      "type": "wokwi-tm1637-7segment",
+      "id": "sevseg1",
+      "top": 28.76,
+      "left": -501.77,
+      "attrs": { "color": "red" }
+    }
   ],
   "connections": [
     [ "esp:TX", "$serialMonitor:RX", "", [] ],
@@ -217,7 +224,11 @@
     [ "btn1:1.r", "bb1:18b.f", "", [ "$bb" ] ],
     [ "btn1:2.r", "bb1:16b.f", "", [ "$bb" ] ],
     [ "r2:1", "bb1:22b.h", "", [ "$bb" ] ],
-    [ "r2:2", "bb1:bn.17", "", [ "$bb" ] ]
+    [ "r2:2", "bb1:bn.17", "", [ "$bb" ] ],
+    [ "sevseg1:CLK", "bb5:14t.c", "green", [ "h0" ] ],
+    [ "bb5:15t.b", "sevseg1:DIO", "green", [ "v0" ] ],
+    [ "sevseg1:VCC", "bb2:tp.12", "red", [ "h19.2", "v163.2", "h-230.4" ] ],
+    [ "sevseg1:GND", "bb2:tn.11", "black", [ "h9.6", "v144", "h-211.2" ] ]
   ],
   "dependencies": {}
 }
