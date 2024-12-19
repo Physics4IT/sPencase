@@ -6,16 +6,16 @@ const Alarm = new Schema({
         ref: "User",
         required: true
     },
-    alarm_time: {
-        type: Date,
+    hour: {
+        type: Number,
         required: true
     },
-    alarm_type: {
-        type: String,
+    minute: {
+        type: Number,
         required: true
     },
-    alarm_message: {
-        type: String,
+    state: {
+        type: Boolean,
         required: true
     }
 });

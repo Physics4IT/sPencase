@@ -16,15 +16,9 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const newAlarm = new AlarmModel({
-            user_id: req.body.user_id,
-            alarm_time: req.body.alarm_time,
-            alarm_type: req.body.alarm_type,
-            alarm_message: req.body.alarm_message,
-        });
-
-        await newAlarm.save();
-        res.json(newAlarm).status(201);
+        const alarms = req.body;
+        const newAlarms = AlarmModel.insertMany(alarms)
+        res.json(newAlarms).status(201);
     } catch (err) {
         console.error(err);
         res.status(500).send('Error adding record');
@@ -53,3 +47,15 @@ router.delete('/:id', async (req, res) => {
         res.status(500).send('Error deleting record');
     }
 });
+
+router.delete('/', async (req, res) => {
+    try {
+        const alarms = await AlarmModel.deleteMany({});
+        res.json(alarms).status(200);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error deleting record');
+    }
+})
+
+export default router;

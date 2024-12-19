@@ -10,7 +10,7 @@ router.post('/register', signup);
 router.post('/login', login);
 router.get('/logout', logout);
 router.get('/me', verifyToken, async (req, res) => {
-    const user = await UserModel.findById(req.userId, { _id: 0, password: 0, __v: 0 });
+    const user = await UserModel.findById(req.userId, { password: 0, __v: 0 });
     res.status(200).json(user);
 });
 

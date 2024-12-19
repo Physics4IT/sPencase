@@ -100,27 +100,31 @@
 
 
 .alarm-container {
-    @apply w-full border-2 rounded-lg flex flex-row justify-between;
+    @apply h-10 w-full border-2 rounded-lg flex flex-row justify-between items-center mb-1;
 }
 
 .alarm-time {
-    @apply h-full flex flex-row justify-start;
+    @apply h-full w-24 flex flex-row justify-center;
 }
 
 .alarm-time-content {
-    @apply text-2xl font-thin text-white pl-4;
+    @apply text-2xl font-thin text-zinc-700;
+}
+
+.alarm-input {
+    @apply h-8 w-[5.75rem] bg-white text-2xl font-thin text-zinc-700 ml-1 rounded-sm border-green-600 outline-green-600;
 }
 
 .alarm-button {
-    @apply h-full w-8;
+    @apply flex flex-row justify-center h-full w-16 rounded-md cursor-pointer hover:bg-slate-300;
 }
 
 .alarm-button-text {
-    @apply text-2xl font-thin text-white;
+    @apply text-2xl font-thin text-zinc-700;
 }
 
 .alarm-delete {
-    @apply w-4 h-4 border-2 border-gray-800 rounded-full;
+    @apply w-4 h-4 border-2 border-gray-800 rounded-full cursor-pointer;
 }
 
 .alarm-icon {

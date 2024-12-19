@@ -1,7 +1,7 @@
 // React libraries
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { AlarmClockPlus, ArrowUpRight, ChevronRight, CircleMinus } from "lucide-react"
+import { ArrowUpRight, ChevronRight } from "lucide-react"
 
 // SHADCN
 import { Card, CardContent, CardHeader } from "../ui/card"
@@ -12,20 +12,10 @@ import { Label } from "../ui/label"
 import "./management.css"
 import bg_img from "../../assets/img/bg_img.jpg"
 import web_logo from "../../assets/img/logo.png"
-
-type alarmData = {
-    _id?: string
-    hour: number
-    minute: number
-    state: boolean
-}
-
-type listAlarm = Array<alarmData> | null
+import AlarmLayer from "./AlarmLayer"
 
 function Management() {
     const nav = useNavigate()
-    const [data, setData] = useState<listAlarm>(null)
-    const [reset, setReset] = useState<boolean>(false)
     const [sendData, setSendData] = useState<boolean>(false)
 
     const [temperature, setTemperature] = useState(24)
@@ -52,19 +42,16 @@ function Management() {
         return (() => clearInterval(interval))
     }, [])
 
-    // useEffect(() => {
-    //     fetch("http://localhost:5000/api/alarms/")
-    //         .then(data => data.json())
-    //         .then(data => setData(data.body))
-            
-    // }, [reset])
-
     useEffect(() => {
         const intervalGetData = setInterval(() => {
             fetch('http://127.0.0.1:1880/data', {method: 'GET'})
-                .then(response => response.text())
+                .then(response => response.json())
                 .then(data => {
                     console.log(data);
+                    if (data.buttonState == 1) {
+                        setTopicMsg("sub/button")
+                        setSendData(true)
+                    }
                 })
                 .catch(error => console.error('Error:', error));
         }, 5000);
@@ -81,7 +68,6 @@ function Management() {
     const [buzzerMsg, setBuzzerMsg] = useState<boolean | undefined>(false)
     const [lcdMsg, setLcdMsg] = useState<boolean | undefined>(false)
     const [vibrationMsg, setVibrationMsg] = useState<boolean | undefined>(false)
-    const [buttonMsg, setButtonMsg] = useState<boolean | undefined>(false)
     const [phoneMsg, setPhoneMsg] = useState<boolean | undefined>(false)
     const [topicMsg, setTopicMsg] = useState<string>("")
 
@@ -142,7 +128,7 @@ function Management() {
                 case "button":
                     bodyData = {
                         topic: "sub/button",
-                        payload: buttonMsg ? "clicked" : "not clicked"
+                        payload: "clicked"
                     }
                     break
 
@@ -182,57 +168,6 @@ function Management() {
     const handleHideAlarm = () => {
         const layer = document.getElementById("layer-alarm")
         if (layer) layer.style.display = "none"
-    }
-
-    const handleAddAlarm = async () => {
-        const newData : listAlarm = data ? [...data] : []
-        newData.push({
-            hour: 0,
-            minute: 0,
-            state: false
-        })
-
-        newData.sort((a, b) => {
-            if (a.hour !== b.hour) {
-                return a.hour - b.hour
-            }
-            return a.minute - b.minute
-        })
-
-        await fetch("http://localhost:5000/api/alarms/", {
-            method: 'DELETE'
-        })
-
-        await fetch("http://localhost:5000/api/alarms/", {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(newData)
-        })
-
-        setReset(!reset)
-    }
-
-    const handleDeleteAlarm = async (key: number) => {
-        if (data) {
-            const newData : listAlarm = [...data]
-            newData.splice(key, 1)
-
-            await fetch("http://localhost:5000/api/alarms/", {
-                method: 'DELETE'
-            })
-
-            await fetch("http://localhost:5000/api/alarms/", {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(newData)
-            })
-    
-            setReset(!reset)
-        }
     }
 
     return (
@@ -355,38 +290,7 @@ function Management() {
                 </div>
             </div>
 
-            <div id="layer-alarm" className="overlay">
-                <div className="layer-container w-[25%] h-[70dvh]">
-                    <div className="w-full flex flex-row justify-between items-center">
-                        <p className="layer-header">Báo thức</p>
-                        <AlarmClockPlus className="h-8 w-8 text-slate-700 hover:text-slate-400 cursor-pointer" onClick={() => handleAddAlarm()}/>
-                    </div>
-                    <div className={`w-full h-[70%] flex flex-col justify-start mt-2 ${data && 'overflow-y-scroll'}`}>
-                        {data?.map((value, key) => {
-                            return (
-                                <div key={key} className={`alarm-container ${value.state ? 'border-green-600' : 'border-zinc-800'}`}>
-                                    <div className="alarm-time">
-                                        <p className="alarm-time-content">{value.hour} : {value.minute}</p>
-                                    </div>
-                                    <div className="alarm-button">
-                                        <p className="alarm-button-text">{value.state? "Tắt" : "Bật"}</p>
-                                    </div>
-                                    <div className="alarm-delete">
-                                        <CircleMinus className="alarm-icon" onClick={() => handleDeleteAlarm(key)}/>
-                                    </div>
-                                </div>
-                            )
-                        })}
-                        {!data && 
-                            <p className="text-2xl font-thin text-stone-700">Không có báo thức nào để hiển thị.</p>
-                        }
-                    </div>
-
-                    <div className="layer-row">
-                        <div className="layer-acc-exit" onClick={() => handleHideAlarm()}>Thoát</div>
-                    </div>
-                </div>
-            </div>
+            <AlarmLayer handleHideAlarm={() => handleHideAlarm()}/>
         </div>
     )
 }
