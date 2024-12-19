@@ -43,7 +43,7 @@ void setup()
   setButton();
   setDHT();
   setUltrasonic();
-  // setTiltSensor();
+  setTiltSensor();
 
   client.setServer(mqtt_broker, port);
   // client.setServer(mqttServer, port);
@@ -151,9 +151,9 @@ void loop()
 
   String buffer_dht = readDHT();
   String buffer_ultrasonic = readUltrasonic();
-  // String buffer_tilt = readTiltSensor();
+  String buffer_tilt = readTiltSensor();
   String btnState = readButton();
-  // printTiltSensor();
+  Serial.println(buffer_tilt);
 
   // client.publish("pub/potentiometer", buffer);
   client.publish("pub/button", btnState.c_str());

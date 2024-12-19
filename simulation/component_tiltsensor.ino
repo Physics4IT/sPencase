@@ -1,35 +1,49 @@
-#include <Adafruit_MPU6050.h>
-#include <Adafruit_Sensor.h>
 #include <Wire.h>
+#include <MPU6050.h>
+#include <math.h>
 
-const int SDA_PIN = 13;
-const int SCL_PIN = 14;
-Adafruit_MPU6050 mpu;
+// Create MPU6050 object
+const int SDA_PIN = 5;
+const int SCL_PIN = 18;
+MPU6050 mpu;
+
+// Thresholds for detecting sudden movement
+const float ACC_THRESHOLD = 1.5; // Acceleration in g
+const float GYRO_THRESHOLD = 50; // Gyro in °/s
 
 void setTiltSensor()
 {
-    Serial.begin(9600);
+    Serial.begin(115200);
     Wire.begin(SDA_PIN, SCL_PIN);
-    while (!mpu.begin())
-    {
-        Serial.println("Failed to find MPU6050 sensor! Retrying in 0.1 second...");
-        delay(100); // Wait for 0.1 second before retrying
-    }
-    Serial.println("MPU6050 Found!");
+    mpu.initialize();
 }
-
-sensors_event_t event;
 
 String readTiltSensor()
 {
-    sensors_event_t accel, gyro, temp;
-    mpu.getEvent(&accel, &gyro, &temp);
+    // Read raw sensor data
+    int16_t ax, ay, az;
+    int16_t gx, gy, gz;
+    mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
 
-    return String("{\"value\": ") + String(0) + String("}");
+    // 1 g = 9.81 m/s²
+    float accelX = ax / 9.81;
+    float accelY = ay / 9.81;
+    float accelZ = az / 9.81;
+
+    // 1 rad/s = 57.2957795 deg/s
+    // MPU6050 đo tốc độ góc = rad/s
+    float gyroX = gx * 57.2957795;
+    float gyroY = gy * 57.2957795;
+    float gyroZ = gz * 57.2957795;
+
+    // Calculate the total acceleration magnitude
+    float totalAccel = sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
+
+    // Calculate the total gyro magnitude
+    float totalGyro = sqrt(gyroX * gyroX + gyroY * gyroY + gyroZ * gyroZ);
+
+    bool is_moving = false;
+    // Check for sudden movement
+    return "{\"Acceleration\": " + String(totalAccel) +
+           ", \"Gyroscope\": " + String(totalGyro) + "}";
 }
-
-/**
-Problem:
-- Không thể tìm thấy MPU6050 -> thử pin khác hay sửa lại code
-- In độ nghiêng là 1 con số -> giờ có 3 trục x,y,z đến 3 số thì in kiểu gì?
-**/

@@ -116,7 +116,8 @@
       "left": -724.8,
       "attrs": { "color": "lime" }
     },
-    { "type": "chip-uv-sensor", "id": "chip1", "top": 884.22, "left": -417.6, "attrs": {} }
+    { "type": "chip-uv-sensor", "id": "chip1", "top": 884.22, "left": -417.6, "attrs": {} },
+    { "type": "wokwi-mpu6050", "id": "imu1", "top": 71.02, "left": -16.88, "attrs": {} }
   ],
   "connections": [
     [ "esp:TX", "$serialMonitor:RX", "", [] ],
@@ -187,6 +188,18 @@
     [ "ldr1:VCC", "bb2:bp.2", "red", [ "v-19.2", "h-76.8", "v-86.4", "h-38.4" ] ],
     [ "ldr1:GND", "bb2:bn.2", "black", [ "v-48", "h-125.2" ] ],
     [ "ldr1:AO", "bb2:30b.j", "green", [ "v-19.2", "h152.9", "v-105.6" ] ],
+    [ "bb2:bp.24", "sw1:1b", "red", [ "v0" ] ],
+    [ "sw1:1b", "sw1:2b", "red", [ "v0" ] ],
+    [ "sw1:2b", "sw1:3b", "red", [ "v0" ] ],
+    [ "sw1:3b", "sw1:4b", "red", [ "v0" ] ],
+    [ "sw1:4b", "sw1:5b", "red", [ "v0" ] ],
+    [ "sw1:5b", "sw1:6b", "red", [ "v0" ] ],
+    [ "sw1:6b", "sw1:7b", "red", [ "v0" ] ],
+    [ "sw1:7b", "sw1:8b", "red", [ "v0" ] ],
+    [ "imu1:SDA", "bb4:11t.a", "green", [ "v-28.8", "h182.48", "v201.6" ] ],
+    [ "imu1:SCL", "bb4:10t.a", "green", [ "v-19.2", "h163.28", "v192" ] ],
+    [ "imu1:VCC", "bb1:bp.3", "red", [ "v-57.6", "h0.08" ] ],
+    [ "imu1:GND", "bb1:bn.3", "black", [ "v9.6", "h115.28" ] ],
     [ "ring1:GND", "bb1:45t.a", "", [ "$bb" ] ],
     [ "ring1:VCC", "bb1:46t.a", "", [ "$bb" ] ],
     [ "ring1:DIN", "bb1:47t.a", "", [ "$bb" ] ],
@@ -204,15 +217,7 @@
     [ "btn1:1.r", "bb1:18b.f", "", [ "$bb" ] ],
     [ "btn1:2.r", "bb1:16b.f", "", [ "$bb" ] ],
     [ "r2:1", "bb1:22b.h", "", [ "$bb" ] ],
-    [ "r2:2", "bb1:bn.17", "", [ "$bb" ] ],
-    [ "bb2:bp.24", "sw1:1b", "red", [ "v0" ] ],
-    [ "sw1:1b", "sw1:2b", "red", [ "v0" ] ],
-    [ "sw1:2b", "sw1:3b", "red", [ "v0" ] ],
-    [ "sw1:3b", "sw1:4b", "red", [ "v0" ] ],
-    [ "sw1:4b", "sw1:5b", "red", [ "v0" ] ],
-    [ "sw1:5b", "sw1:6b", "red", [ "v0" ] ],
-    [ "sw1:6b", "sw1:7b", "red", [ "v0" ] ],
-    [ "sw1:7b", "sw1:8b", "red", [ "v0" ] ]
+    [ "r2:2", "bb1:bn.17", "", [ "$bb" ] ]
   ],
   "dependencies": {}
 }
