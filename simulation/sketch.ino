@@ -122,7 +122,6 @@ void callback(char *topic, byte *message, unsigned int length)
   }
   else if (strcmp(topic, "sub/sevenSegment") == 0)
   {
-    use7segment(1234);
   }
   else if (strcmp(topic, "sub/buzzer") == 0)
   {
@@ -155,7 +154,7 @@ void loop()
   mode_63color();
 
   neo_switch_mode();
-  use7segment(1234); // DEBUG ONLY, DELETE WHEN DONE
+  updateTime(); // DEBUG ONLY, DELETE WHEN DONE
 
   String buffer_dht = readDHT();
   String buffer_ultrasonic = readUltrasonic();
