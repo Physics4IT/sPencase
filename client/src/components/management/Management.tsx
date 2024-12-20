@@ -13,6 +13,7 @@ import "./management.css"
 import bg_img from "../../assets/img/bg_img.jpg"
 import web_logo from "../../assets/img/logo.png"
 import AlarmLayer from "./AlarmLayer"
+import { getPhoneTime, setPhoneTime } from "./sendPhoneTime"
 
 function Management() {
     const nav = useNavigate()
@@ -52,6 +53,31 @@ function Management() {
                         setTopicMsg("sub/button")
                         setSendData(true)
                     }
+                    
+                    if (Date.now() - getPhoneTime() > 60000) {
+                        if (data.temperature > 35) {
+                            setTopicMsg("phone")
+                            setPhoneMsg("Nhiệt độ đang ở mức cao!: " + String(data.temperature) + " độ C")
+                            setSendData(true)
+                        }
+                        if (data.humidity < 20 || data.humidity > 80) {
+                            setTopicMsg("phone")
+                            setPhoneMsg("Độ ẩm đang bất thường!: " + String(data.humidity) + "%")
+                            setSendData(true)    
+                        }
+                        if (data.uv > 11) {
+                            setTopicMsg("phone")
+                            setPhoneMsg("Cường độ tia UV đang rất cao!: " + String(data.uv) + " mW/cm2")
+                            setSendData(true)
+                        }
+                        if (data.tilt > 2) {
+                            setTopicMsg("phone")
+                            setPhoneMsg("Thiết bị đang bị rung lắc mạnh!")
+                            setSendData(true)
+                        }
+                        setPhoneTime(Date.now())
+                    }
+                    return data
                 })
                 .catch(error => console.error('Error:', error));
         }, 5000);
@@ -68,7 +94,7 @@ function Management() {
     const [buzzerMsg, setBuzzerMsg] = useState<boolean | undefined>(false)
     const [lcdMsg, setLcdMsg] = useState<boolean | undefined>(false)
     const [vibrationMsg, setVibrationMsg] = useState<boolean | undefined>(false)
-    const [phoneMsg, setPhoneMsg] = useState<boolean | undefined>(false)
+    const [phoneMsg, setPhoneMsg] = useState<string>("")
     const [topicMsg, setTopicMsg] = useState<string>("")
 
     useEffect(() => {
