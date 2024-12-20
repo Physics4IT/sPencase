@@ -154,7 +154,7 @@ void loop()
   mode_63color();
 
   neo_switch_mode();
-  updateTime(); // DEBUG ONLY, DELETE WHEN DONE
+  displayTime(); // DEBUG ONLY, DELETE WHEN DONE
 
   String buffer_dht = readDHT();
   String buffer_ultrasonic = readUltrasonic();

@@ -2,34 +2,22 @@
   "name": "uv-sensor",
   "author": "",
   "pins": [
+    "VCC",
     "GND",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "SIG",
-    "I8",
-    "I7",
-    "I6",
-    "I5",
-    "I4",
-    "I3",
-    "I2",
-    "I1"
+    "SIG"
   ],
   "controls": [
     {
       "min": 0,
       "max": 36,
-      "step": 1
+      "step": 1,
+      "id": "value"
     }
   ],
   "logic": {
     "SIG": {
       "type": "function",
-      "source": ""
+      "source": "const scaledVoltage = (controls.value / 36) * 5; analogWrite(pins.SIG, scaledVoltage); return controls.value;"
     }
   }
 }

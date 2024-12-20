@@ -1,4 +1,4 @@
-const int UVS_PIN = 32;
+const int UVS_PIN = 36;
 
 void setUVS() {
   pinMode(UVS_PIN, INPUT);
