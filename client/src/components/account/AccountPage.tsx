@@ -15,6 +15,7 @@ import bg_img from "../../assets/img/bg_img.jpg"
 import avatar from "../../assets/img/avatar.jpg"
 import InforForm from "./InforForm";
 import NavSection from "./NavSection";
+import { getEmailMsg, getEmailSend, getMailto, setEmailSend, setMailto } from "./emailMessage";
 
 function AccountPage() {
     const nav = useNavigate()
@@ -31,6 +32,7 @@ function AccountPage() {
     const [tempPhone, setTempPhone] = useState(phoneNum)
 
     useEffect(() => {
+        // Fetch user's data
         fetch("http://localhost:5000/api/users/me", {
             method: "GET",
             headers: {
@@ -50,13 +52,27 @@ function AccountPage() {
                 setUsername(data.username)
                 setEmail(data.email)
                 setPhoneNum(data.phonenum)
+                setMailto(data.email)
             })
-            // .then(data => data.user)
-            // .then(body => {
-            //     setUsername(body.username)
-            //     setEmail(body.email)
-            //     setPhoneNum(body.phonenum)
-            // })
+
+        // Send email of logging in successfully
+        if (getEmailSend()) {
+            emailjs.send(service_id, template_id, 
+                {
+                    title: 'Tin nhắn mới',
+                    mailto: getMailto(),
+                    message: getEmailMsg()
+                }, options
+            )
+            .then(() => {
+                console.log("Email sent successfully!")
+            })
+            .catch((error) => {
+                console.error("Error sending email:", error)
+            })
+            
+            setEmailSend()
+        }
     }, [])
 
     const handleShowChangeInfo = () => {
@@ -84,13 +100,26 @@ function AccountPage() {
     }
 
     const handleSaveInfo = () => {
-        if (tempName.trim() !== "" && tempName != username) setUsername(tempName)
+        let change = false
+        if (tempName.trim() !== "" && tempName != username) {
+            setUsername(tempName)
+            change = true
+        }
         if (tempMail.trim() !== "" && tempMail != email) {
+            setEmail(tempMail)
+            change = true
+        }
+        if (tempPhone.trim() !== "" && tempPhone != phoneNum) {
+            setPhoneNum(tempPhone)
+            change = true
+        }
+
+        if (change) {
             emailjs.send(service_id, template_id, 
                 {
                     title: 'New message',
-                    mailto: 'daongocthien719@gmail.com',
-                    message: 'New message'
+                    mailto: email,
+                    message: 'Thông tin cá nhân của bạn đã được thay đổi'
                 }, options
             )
             .then(() => {
@@ -99,10 +128,9 @@ function AccountPage() {
             .catch((error) => {
                 console.error("Error sending email:", error)
             })
-
-            setEmail(tempMail)
         }
-        if (tempPhone.trim() !== "" && tempPhone != phoneNum) setPhoneNum(tempPhone)
+
+        /////////////////////// WRITE CODE SEGMENT TO CHANGE USER'S INFORMATION IN DATABASE
 
         const layer = document.getElementById("layer-account-info")
         if (layer) layer.style.display = "none"

@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useEffect, useRef, useState } from "react";
+import { setEmailMsg, setEmailSend } from "../account/emailMessage";
 
 function LoginPage() {
     const nav = useNavigate()
@@ -40,6 +41,8 @@ function LoginPage() {
         if (response.ok) {
             const res = await response.json()
             console.log(res)
+            setEmailMsg("Tài khoản của bạn đã được đăng nhập.")
+            setEmailSend()
             nav("/account")
         } else {
             console.log("Error")
