@@ -1,10 +1,11 @@
 import express from 'express';
 import AlarmModel from '../../models/Alarm.js';
+import { verifyToken } from '../../middlewares/auth.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-    const alarms = await AlarmModel.find();
+router.get('/', verifyToken, async (req, res) => {
+    const alarms = await AlarmModel.find({user_id: req.userId});
     res.json(alarms).status(200);
 });
 
@@ -48,9 +49,9 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.delete('/', async (req, res) => {
+router.delete('/', verifyToken, async (req, res) => {
     try {
-        const alarms = await AlarmModel.deleteMany({});
+        const alarms = await AlarmModel.deleteMany({user_id: req.userId});
         res.json(alarms).status(200);
     } catch (err) {
         console.error(err);
