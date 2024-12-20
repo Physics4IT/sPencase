@@ -69,6 +69,21 @@ export const login = async (req, res) => {
     }
 }
 
+export const updateInfo = async(req, res) => {
+    const { username, email, phonenum } = req.body;
+    const token = req.cookies["x-access-token"];
+    const decoded = jwt.decode(token);
+
+    try {
+        await UserModel.findByIdAndUpdate(decoded.id, { username, email, phonenum });
+        res.status(200).json("User info updated");
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).send("Error updating user info");
+    }
+}
+
 export const logout = async (req, res) => {
     try {
         const token = req.cookies["x-access-token"];
