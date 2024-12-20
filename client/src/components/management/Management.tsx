@@ -25,6 +25,7 @@ function Management() {
     const [uv, setUv] = useState(0)
     const [tilt, setTilt] = useState(1)
     const [brightness, setBrightness] = useState(255)
+    const [distance, setDistance] = useState(255)
 
     const [time, setTime] = useState<number>(Date.now())
 
@@ -53,6 +54,9 @@ function Management() {
                         topic: "sub/lcd",
                         payload: lcdDisplayValue
                     })
+
+                    setDistance(data.distance)
+                    setUv(data.uv)
                     
                     // if (Date.now() - getPhoneTime() > 60000) {
                     //     if (data.temperature > 35) {
@@ -237,11 +241,29 @@ function Management() {
                                 <div className="info-actions">
                                     <div className="info-action w-[50%] line-after">
                                         <Label htmlFor="auto" className="info-label">Tự động đóng mở</Label>
-                                        <Switch id="auto" className="info-switch"/>
+                                        <Switch id="auto" className="info-switch" checked={servoMsg}
+                                            onCheckedChange={(e) => {
+                                                listMessage_add({
+                                                    topic: "sub/servo",
+                                                    payload: e && distance < 10 ? "90" : "0"
+                                                })
+                                                setServoMsg(e)
+                                                setSendData(true)
+                                            }}
+                                        />
                                     </div>
                                     <div className="info-action w-[50%]">
                                         <Label htmlFor="vibrate" className="info-label">Rung</Label>
-                                        <Switch id="vibrate" className="info-switch"/>
+                                        <Switch id="vibrate" className="info-switch" checked={vibrationMsg}
+                                            onCheckedChange={(e) => {
+                                                listMessage_add({
+                                                    topic: "sub/vibration",
+                                                    payload: e && uv > 8 ? "on" : "off"
+                                                })
+                                                setVibrationMsg(e)
+                                                setSendData(true)
+                                            }}
+                                        />
                                     </div>
                                 </div>
                             </div>

@@ -97,3 +97,18 @@ export const logout = async (req, res) => {
         res.status(500).send("Error logging out");
     }
 }
+
+export const deleteUser = async (req, res) => {
+    const token = req.cookies["x-access-token"];
+    const decoded = jwt.decode(token);
+
+    try {
+        await UserModel.findByIdAndDelete(decoded.id);
+        await SessionModel.deleteOne({ user_id: decoded.id });
+        res.status(200).json("User deleted");
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).send("Error deleting user");
+    }
+}

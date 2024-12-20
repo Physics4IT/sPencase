@@ -130,7 +130,28 @@ function AccountPage() {
             })
         }
 
-        /////////////////////// WRITE CODE SEGMENT TO CHANGE USER'S INFORMATION IN DATABASE
+        fetch("http://localhost:5000/api/users/update", {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                username: tempName,
+                email: tempMail,
+                phonenum: tempPhone
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                }
+                throw new Error("Network response was not ok")
+            })
+            .catch(error => console.error("Error: ", error))
+            // .then(data => {
+            //     console.log(data)
+            // })
 
         const layer = document.getElementById("layer-account-info")
         if (layer) layer.style.display = "none"
@@ -158,6 +179,28 @@ function AccountPage() {
 
         const layer = document.getElementById("layer-logout")
         if (layer) layer.style.display = "none"
+
+        nav("/")
+    }
+
+    const handleDelete = () => {
+        fetch("http://localhost:5000/api/users/delete", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include"
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                }
+                throw new Error("Network response was not ok")
+            })
+            .catch(error => console.error("Error: ", error))
+            // .then(data => {
+            //     console.log(data)
+            // })
 
         nav("/")
     }
