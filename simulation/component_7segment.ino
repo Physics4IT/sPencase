@@ -1,8 +1,8 @@
 #include <TM1637Display.h>
 
 // Define TM1637 pins
-#define CLK 33 // Clock pin
-#define DIO 32 // Data pin
+#define CLK 14 // Clock pin
+#define DIO 13 // Data pin
 
 TM1637Display display(CLK, DIO);
 

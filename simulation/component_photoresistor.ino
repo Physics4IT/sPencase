@@ -1,4 +1,4 @@
-const int PHOTORESISTOR = 13;
+const int PHOTORESISTOR = 35;
 
 void setPhotoresistor() {
   pinMode(PHOTORESISTOR, INPUT);

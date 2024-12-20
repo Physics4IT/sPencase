@@ -45,6 +45,10 @@ void setup()
   setUltrasonic();
   setTiltSensor();
   set7segment();
+  setPotentiometer();
+  setPhotoresistor();
+  setServo();
+  setUVS();
 
   client.setServer(mqtt_broker, port);
   // client.setServer(mqttServer, port);
@@ -114,6 +118,7 @@ void callback(char *topic, byte *message, unsigned int length)
   }
   else if (strcmp(topic, "sub/servo") == 0)
   {
+    writeServo(strMsg.toInt());
   }
   else if (strcmp(topic, "sub/sevenSegment") == 0)
   {
@@ -155,14 +160,21 @@ void loop()
   String buffer_dht = readDHT();
   String buffer_ultrasonic = readUltrasonic();
   String buffer_tilt = readTiltSensor();
-  String btnState = readButton();
-  Serial.println(buffer_tilt);
+  // String btnState = readButton();
+  String buffer_pot = readPotentiometer();
+  String buffer_photo = readPhotoresistor();
+  String buffer_uvs = readUVS();
 
-  // client.publish("pub/potentiometer", buffer);
-  client.publish("pub/button", btnState.c_str());
-  // client.publish("pub/photoresistor", buffer);
+  // Serial.println(buffer_tilt);
+  // Serial.println(buffer_pot);
+  // Serial.println(buffer_photo);
+  Serial.println(buffer_uvs);
+
+  client.publish("pub/potentiometer", buffer_pot.c_str());
+  // client.publish("pub/button", btnState.c_str());
+  client.publish("pub/photoresistor", buffer_photo.c_str());
   client.publish("pub/dht", buffer_dht.c_str());
-  // client.publish("pub/uvSensor", buffer);
+  client.publish("pub/uvSensor", buffer_uvs.c_str());
   // client.publish("pub/tiltSensor", buffer_tilt.c_str());
   client.publish("pub/ultrasonicSensor", buffer_ultrasonic.c_str());
 

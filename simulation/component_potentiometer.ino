@@ -1,10 +1,10 @@
-const int POTENTIOMETER = 14;
+const int POTENTIOMETER = 34;
 
 void setPotentiometer() {
   pinMode(POTENTIOMETER, INPUT);
 }
 
-String readPotentionmeter() {
+String readPotentiometer() {
   int value = analogRead(POTENTIOMETER);
   return "{\"value\": " + String(value) + "}";
 }
