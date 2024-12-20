@@ -15,7 +15,7 @@ import bg_img from "../../assets/img/bg_img.jpg"
 import avatar from "../../assets/img/avatar.jpg"
 import InforForm from "./InforForm";
 import NavSection from "./NavSection";
-import { getEmailMsg, getEmailSend, getMailto, setEmailSend, setMailto } from "./emailMessage";
+import { getEmailMsg, getEmailSend, setEmailSend } from "./emailMessage";
 
 function AccountPage() {
     const nav = useNavigate()
@@ -52,27 +52,27 @@ function AccountPage() {
                 setUsername(data.username)
                 setEmail(data.email)
                 setPhoneNum(data.phonenum)
-                setMailto(data.email)
+
+                // Send email of logging in successfully
+                if (getEmailSend()) {
+                    emailjs.send(service_id, template_id, 
+                        {
+                            title: 'Tin nhắn mới',
+                            mailto: data.email,
+                            message: getEmailMsg()
+                        }, options
+                    )
+                    .then(() => {
+                        console.log("Email sent successfully!")
+                    })
+                    .catch((error) => {
+                        console.error("Error sending email:", error)
+                    })
+                    
+                    setEmailSend()
+                }
             })
 
-        // Send email of logging in successfully
-        if (getEmailSend()) {
-            emailjs.send(service_id, template_id, 
-                {
-                    title: 'Tin nhắn mới',
-                    mailto: getMailto(),
-                    message: getEmailMsg()
-                }, options
-            )
-            .then(() => {
-                console.log("Email sent successfully!")
-            })
-            .catch((error) => {
-                console.error("Error sending email:", error)
-            })
-            
-            setEmailSend()
-        }
     }, [])
 
     const handleShowChangeInfo = () => {

@@ -1,11 +1,6 @@
 export const emailMsg = {
-    mailto: "",
     msg: "",
     send: false
-}
-
-export function getMailto() {
-    return emailMsg.mailto
 }
 
 export function getEmailMsg() {
@@ -14,10 +9,6 @@ export function getEmailMsg() {
 
 export function getEmailSend() {
     return emailMsg.send
-}
-
-export function setMailto(email: string) {
-    emailMsg.mailto = email
 }
 
 export function setEmailMsg(message: string) {
