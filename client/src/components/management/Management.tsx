@@ -14,6 +14,7 @@ import bg_img from "../../assets/img/bg_img.jpg"
 import web_logo from "../../assets/img/logo.png"
 import AlarmLayer from "./AlarmLayer"
 import { getPhoneTime, setPhoneTime } from "./sendPhoneTime"
+import { listMessage, listMessage_add, listMessage_removeAll } from "./outputMessage"
 
 function Management() {
     const nav = useNavigate()
@@ -26,14 +27,6 @@ function Management() {
     const [brightness, setBrightness] = useState(255)
 
     const [time, setTime] = useState<number>(Date.now())
-
-    useEffect(() => {
-        setTemperature(temperature)
-        setHumidity(humidity)
-        setUv(uv)
-        setTilt(tilt)
-        setBrightness(brightness)
-    }, [])
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -49,38 +42,50 @@ function Management() {
                 .then(response => response.json())
                 .then(data => {
                     if (data.buttonState == 1) {
-                        setTopicMsg("sub/button")
-                        setSendData(true)
+                        listMessage_add({
+                            topic: "sub/button",
+                            payload: "clicked"
+                        })
                     }
-                    
-                    if (Date.now() - getPhoneTime() > 60000) {
-                        // if (data.temperature > 35) {
-                        //     setTopicMsg("phone")
-                        //     setPhoneMsg("Nhiệt độ đang ở mức cao!: " + String(data.temperature) + " độ C")
-                        //     setSendData(true)
-                        // }
-                        // if (data.humidity < 20 || data.humidity > 80) {
-                        //     setTopicMsg("phone")
-                        //     setPhoneMsg("Độ ẩm đang bất thường!: " + String(data.humidity) + "%")
-                        //     setSendData(true)    
-                        // }
-                        // if (data.uv > 11) {
-                        //     setTopicMsg("phone")
-                        //     setPhoneMsg("Cường độ tia UV đang rất cao!: " + String(data.uv) + " mW/cm2")
-                        //     setSendData(true)
-                        // }
-                        // if (data.tilt > 2) {
-                        //     setTopicMsg("phone")
-                        //     setPhoneMsg("Thiết bị đang bị rung lắc mạnh!")
-                        //     setSendData(true)
-                        // }
-                        // setPhoneTime(Date.now())
 
-                    }
+                    const lcdDisplayValue = "2 Temp: " + String(data.temperature).padStart(10, ' ') + "Humid: " + String(data.humidity).padStart(9, ' ')
+                    listMessage_add({
+                        topic: "sub/lcd",
+                        payload: lcdDisplayValue
+                    })
+                    
+                    // if (Date.now() - getPhoneTime() > 60000) {
+                    //     if (data.temperature > 35) {
+                    //         listMessage_add({
+                    //             topic: "phoneMsg",
+                    //             payload: "Nhiệt độ đang ở mức cao!: " + String(data.temperature) + " độ C" 
+                    //         })
+                    //     }
+                    //     if (data.humidity < 20 || data.humidity > 80) {
+                    //         listMessage_add({
+                    //             topic: "phoneMsg",
+                    //             payload: "Độ ẩm đang bất thường!: " + String(data.humidity) + "%"
+                    //         })
+                    //     }
+                    //     if (data.uv > 11) {
+                    //         listMessage_add({
+                    //             topic: "phoneMsg",
+                    //             payload: "Cường độ tia UV đang rất cao!: " + String(data.uv) + " mW/cm2"
+                    //         })
+                    //     }
+                    //     if (data.tilt > 2) {
+                    //         listMessage_add({
+                    //             topic: "phoneMsg",
+                    //             payload: "Thiết bị đang bị rung lắc mạnh!"
+                    //         })
+                    //     }
+                    //     setPhoneTime(Date.now())
+                    // }
+                    setSendData(true)
                     return data
                 })
                 .catch(error => console.error('Error:', error));
-            console.log("Fuck", data);
+                
             if (Date.now() - getPhoneTime() > 60000) {
                 await fetch('http://localhost:5000/api/dataRecords/', {
                     method: 'POST',
@@ -106,90 +111,26 @@ function Management() {
     const [buzzerMsg, setBuzzerMsg] = useState<boolean | undefined>(false)
     const [lcdMsg, setLcdMsg] = useState<boolean | undefined>(false)
     const [vibrationMsg, setVibrationMsg] = useState<boolean | undefined>(false)
-    const [phoneMsg, setPhoneMsg] = useState<string>("")
-    const [topicMsg, setTopicMsg] = useState<string>("")
 
     useEffect(() => {
         if (sendData) {
-            let bodyData;
-
-            switch (topicMsg) {
-                case "rgb":
-                    bodyData = {
-                        topic: "sub/rgb",
-                        payload: rgbMsg ? "on" : "off"
-                    }
-                    break
-
-                case "neopixel":
-                    bodyData = {
-                        topic: "sub/neopixel",
-                        payload: neopixelMsg ? "on" : "off"
-                    }
-                    break
-
-                case "servo":
-                    bodyData = {
-                        topic: "sub/servo",
-                        payload: servoMsg
-                    }
-                    break
-
-                case "sevenSegment":
-                    bodyData = {
-                        topic: "sub/sevenSegment",
-                        payload: sevenSegmentMsg
-                    }
-                    break
-
-                case "buzzer":
-                    bodyData = {
-                        topic: "sub/buzzer",
-                        payload: buzzerMsg
-                    }
-                    break
-
-                case "lcd":
-                    bodyData = {
-                        topic: "sub/lcd",
-                        payload: lcdMsg ? "3 on" : "3 off"
-                    }
-                    break
-
-                case "vibration":
-                    bodyData = {
-                        topic: "sub/vibration",
-                        payload: vibrationMsg
-                    }
-                    break
-
-                case "button":
-                    bodyData = {
-                        topic: "sub/button",
-                        payload: "clicked"
-                    }
-                    break
-
-                case "phone":
-                    bodyData = {
-                        topic: "phoneMsg",
-                        payload: phoneMsg
-                    }
-            }
-
-            fetch('http://127.0.0.1:1880/receiveData', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(bodyData)
+            listMessage?.map((msg) => {
+                fetch('http://127.0.0.1:1880/receiveData', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(msg)
+                })
+                .then(response => response.text())
+                .then(result => {console.log('Success: ', result)})
+                .catch(error => {console.log('Error: ', error)})
             })
-            .then(response => response.text())
-            .then(result => {console.log('Success: ', result)})
-            .catch(error => {console.log('Error: ', error)})
+
             setSendData(false)
+            listMessage_removeAll()
         }
-    }, [sendData, topicMsg])
+    }, [sendData])
 
     const parseTime = (timeStamp: number) => {
         const hours = new Date(timeStamp).getHours();
@@ -237,8 +178,11 @@ function Management() {
                                         <Label htmlFor="rgb" className="info-label">RGB</Label>
                                         <Switch id="rgb" className="info-switch" checked={rgbMsg} 
                                             onCheckedChange={(e) => {
+                                                listMessage_add({
+                                                    topic: "sub/rgb",
+                                                    payload: e ? "on" : "off"
+                                                })
                                                 setRgbMsg(e)
-                                                setTopicMsg("rgb")
                                                 setSendData(true)
                                             }}
                                         />
@@ -247,8 +191,11 @@ function Management() {
                                         <Label htmlFor="neopixel" className="info-label">Neopixel</Label>
                                         <Switch id="neopixel" className="info-switch" checked={neopixelMsg}
                                             onCheckedChange={(e) => {
+                                                listMessage_add({
+                                                    topic: "sub/neopixel",
+                                                    payload: e ? "on" : "off"
+                                                })
                                                 setNeopixelMsg(e)
-                                                setTopicMsg("neopixel")
                                                 setSendData(true)
                                             }}
                                         />
@@ -257,8 +204,11 @@ function Management() {
                                         <Label htmlFor="lcd" className="info-label">LCD</Label>
                                         <Switch id="lcd" className="info-switch" checked={lcdMsg}
                                             onCheckedChange={(e) => {
+                                                listMessage_add({
+                                                    topic: "sub/lcd",
+                                                    payload: e ? "3 on" : "3 off"
+                                                })
                                                 setLcdMsg(e)
-                                                setTopicMsg("lcd")
                                                 setSendData(true)
                                             }}
                                         />
