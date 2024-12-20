@@ -13,7 +13,7 @@ export type alarmData = {
 export type listAlarm = Array<alarmData> | null
 
 function AlarmLayer({
-    handleHideAlarm = () => {},
+    HideAlarm = () => {},
 }) {
     const [data, setData] = useState<listAlarm>([])
     const [reset, setReset] = useState<boolean>(false)
@@ -25,38 +25,34 @@ function AlarmLayer({
     const inputRef = useRef<HTMLInputElement | null>(null)
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/users/me/")
+        fetch("http://localhost:5000/api/users/me/", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include"
+        })
             .then(data => data.json())
             .then(data => setUser(data._id))
     }, [])
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/alarms/")
-            .then(data => data.json())
-            .then(data => setData(data.body))
-    }, [reset])
-
-    const handleAddAlarm = async () => {
-
-        await fetch("http://localhost:5000/api/alarms/", {
-            method: 'DELETE'
-        })
-
-        await fetch("http://localhost:5000/api/alarms/", {
-            method: 'POST',
+        fetch("http://localhost:5000/api/alarms/", {
+            method: "GET",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(data)
+            credentials: "include"
         })
+            .then(data => data.json())
+            .then(data => setData(data))
+    }, [reset])
 
-        setReset(!reset)
-    }
-
-    const handleDeleteAlarm = async () => {
+    const handleUpdateAlarm = async (data: listAlarm) => {
         if (data) {
             await fetch("http://localhost:5000/api/alarms/", {
-                method: 'DELETE'
+                method: 'DELETE',
+                credentials: "include"
             })
 
             await fetch("http://localhost:5000/api/alarms/", {
@@ -64,11 +60,11 @@ function AlarmLayer({
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
+                credentials: "include"
             })
-    
-            setReset(!reset)
         }
+        setReset(!reset)
     }
 
     const prevAddAlarm = () => {
@@ -79,7 +75,7 @@ function AlarmLayer({
             state: true
         }
         const newData : listAlarm = data ? [newAlarm, ...data] : [newAlarm]
-        setData(newData)
+        handleUpdateAlarm(newData)
     }
 
     const changeState = (id: number) => {
@@ -88,13 +84,13 @@ function AlarmLayer({
             if (key == id) return {...item, state: !item.state}
             else return item
         })
-        setData(newData)
+        handleUpdateAlarm(newData)
     }
 
     const prevDeleteAlarm = (key: number) => {
         const newData : listAlarm = data ? data : []
         newData.splice(key, 1)
-        setData(newData)
+        handleUpdateAlarm(newData)
     }
 
     const checkString = (str: string) => {
@@ -113,6 +109,7 @@ function AlarmLayer({
     const removeDuplicates = (array: listAlarm) => {
         const seen = new Set()
         return array ? array.filter(obj => {
+            if (!(obj.state)) return false
             const key = `${obj.hour}:${obj.minute}`
             if (seen.has(key)) return false
             seen.add(key)
@@ -139,7 +136,7 @@ function AlarmLayer({
                     return a.minute - b.minute
                 })
                 
-                setData(newData)
+                handleUpdateAlarm(newData)
             } else alert("Giá trị không hợp lệ!")
             setOnChangeValue(false)
             setAlarm_id(-1)
@@ -176,38 +173,36 @@ function AlarmLayer({
                 <div className={`layer-alarm-content ${data && 'overflow-y-scroll'}`}>
                     {data?.map((value: alarmData, key: number) => {
                         return (
-                            <React.Fragment>
-                                <div key={key} className={`alarm-container ${value.state ? 'border-green-600 bg-green-100' : 'border-zinc-800 bg-slate-200'}`}>
-                                    {!(alarm_id == key) ?
-                                        <div className="alarm-time cursor-pointer" onClick={() => {
-                                            setAlarm_id(key)
-                                            setInputValue(value.hour + ":" + value.minute)
-                                        }}>
-                                            <p className="alarm-time-content">
-                                                {value.hour.toString().length < 2 ? "0" + value.hour.toString() : value.hour} 
-                                                : 
-                                                {value.minute.toString().length < 2 ? "0" + value.minute.toString() : value.minute}
-                                            </p>
-                                        </div> :
-                                        <Input 
-                                            className={`alarm-input ${value.state ? 'border-green-600' : 'border-zinc-800'}`} 
-                                            autoFocus
-                                            ref={inputRef}
-                                            value={inputValue}
-                                            onChange={(e) => setInputValue(e.target.value)}
-                                        />
-                                    }
+                            <div key={key} className={`alarm-container ${value.state ? 'border-green-600 bg-green-100' : 'border-zinc-800 bg-slate-200'}`}>
+                                {!(alarm_id == key) ?
+                                    <div className="alarm-time cursor-pointer" onClick={() => {
+                                        setAlarm_id(key)
+                                        setInputValue(value.hour + ":" + value.minute)
+                                    }}>
+                                        <p className="alarm-time-content">
+                                            {value.hour.toString().length < 2 ? "0" + value.hour.toString() : value.hour} 
+                                            : 
+                                            {value.minute.toString().length < 2 ? "0" + value.minute.toString() : value.minute}
+                                        </p>
+                                    </div> :
+                                    <Input 
+                                        className={`alarm-input ${value.state ? 'border-green-600' : 'border-zinc-800'}`} 
+                                        autoFocus
+                                        ref={inputRef}
+                                        value={inputValue}
+                                        onChange={(e) => setInputValue(e.target.value)}
+                                    />
+                                }
 
-                                    <div className="alarm-button" onClick={() => changeState(key)}>
-                                        <p className="alarm-button-text">{value.state? "Bật" : "Tắt"}</p>
-                                    </div>
-                                    <abbr title="Xóa báo thức">
-                                        <div className="alarm-delete">
-                                            <CircleMinus className="alarm-icon" onClick={() => prevDeleteAlarm(key)}/>
-                                        </div>
-                                    </abbr>
+                                <div className="alarm-button" onClick={() => changeState(key)}>
+                                    <p className="alarm-button-text">{value.state? "Bật" : "Tắt"}</p>
                                 </div>
-                            </React.Fragment>
+                                <abbr title="Xóa báo thức">
+                                    <div className="alarm-delete">
+                                        <CircleMinus className="alarm-icon" onClick={() => prevDeleteAlarm(key)}/>
+                                    </div>
+                                </abbr>
+                            </div>
                         )
                     })}
                     {!data && 
@@ -216,7 +211,7 @@ function AlarmLayer({
                 </div>
 
                 <div className="layer-row">
-                    <div className="layer-acc-exit" onClick={() => handleHideAlarm()}>Thoát</div>
+                    <div className="layer-acc-exit" onClick={() => HideAlarm()}>Thoát</div>
                 </div>
             </div>
         </div>

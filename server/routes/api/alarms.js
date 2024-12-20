@@ -5,7 +5,7 @@ import { verifyToken } from '../../middlewares/auth.js';
 const router = express.Router();
 
 router.get('/', verifyToken, async (req, res) => {
-    const alarms = await AlarmModel.find({user_id: req.userId});
+    const alarms = await AlarmModel.find({user_id: req.userId})
     res.json(alarms).status(200);
 });
 

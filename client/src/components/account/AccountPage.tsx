@@ -109,9 +109,8 @@ function AccountPage() {
     }
 
     const handleLogout = () => {
-        ///////////////////////////////////////
         fetch("http://localhost:5000/api/users/logout", {
-            method: "POST",
+            method: "GET",
             headers: {
                 "Content-Type": "application/json"
             },

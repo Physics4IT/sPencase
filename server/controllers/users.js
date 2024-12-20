@@ -75,7 +75,7 @@ export const logout = async (req, res) => {
         const decoded = jwt.decode(token);
 
         await SessionModel.deleteOne({ user_id: decoded.id });
-        res.status(200).send("Logout successful");
+        res.status(200).json("Logout successful");
     }
     catch (err) {
         console.error(err);

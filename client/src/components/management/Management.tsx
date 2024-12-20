@@ -290,7 +290,7 @@ function Management() {
                 </div>
             </div>
 
-            <AlarmLayer handleHideAlarm={() => handleHideAlarm()}/>
+            <AlarmLayer HideAlarm={() => handleHideAlarm()}/>
         </div>
     )
 }
