@@ -44,42 +44,54 @@ function Management() {
     }, [])
 
     useEffect(() => {
-        const intervalGetData = setInterval(() => {
-            fetch('http://127.0.0.1:1880/data', {method: 'GET'})
+        const intervalGetData = setInterval(async () => {
+            const data = await fetch('http://127.0.0.1:1880/data', {method: 'GET'})
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     if (data.buttonState == 1) {
                         setTopicMsg("sub/button")
                         setSendData(true)
                     }
                     
                     if (Date.now() - getPhoneTime() > 60000) {
-                        if (data.temperature > 35) {
-                            setTopicMsg("phone")
-                            setPhoneMsg("Nhiệt độ đang ở mức cao!: " + String(data.temperature) + " độ C")
-                            setSendData(true)
-                        }
-                        if (data.humidity < 20 || data.humidity > 80) {
-                            setTopicMsg("phone")
-                            setPhoneMsg("Độ ẩm đang bất thường!: " + String(data.humidity) + "%")
-                            setSendData(true)    
-                        }
-                        if (data.uv > 11) {
-                            setTopicMsg("phone")
-                            setPhoneMsg("Cường độ tia UV đang rất cao!: " + String(data.uv) + " mW/cm2")
-                            setSendData(true)
-                        }
-                        if (data.tilt > 2) {
-                            setTopicMsg("phone")
-                            setPhoneMsg("Thiết bị đang bị rung lắc mạnh!")
-                            setSendData(true)
-                        }
-                        setPhoneTime(Date.now())
+                        // if (data.temperature > 35) {
+                        //     setTopicMsg("phone")
+                        //     setPhoneMsg("Nhiệt độ đang ở mức cao!: " + String(data.temperature) + " độ C")
+                        //     setSendData(true)
+                        // }
+                        // if (data.humidity < 20 || data.humidity > 80) {
+                        //     setTopicMsg("phone")
+                        //     setPhoneMsg("Độ ẩm đang bất thường!: " + String(data.humidity) + "%")
+                        //     setSendData(true)    
+                        // }
+                        // if (data.uv > 11) {
+                        //     setTopicMsg("phone")
+                        //     setPhoneMsg("Cường độ tia UV đang rất cao!: " + String(data.uv) + " mW/cm2")
+                        //     setSendData(true)
+                        // }
+                        // if (data.tilt > 2) {
+                        //     setTopicMsg("phone")
+                        //     setPhoneMsg("Thiết bị đang bị rung lắc mạnh!")
+                        //     setSendData(true)
+                        // }
+                        // setPhoneTime(Date.now())
+
                     }
                     return data
                 })
                 .catch(error => console.error('Error:', error));
+            console.log("Fuck", data);
+            if (Date.now() - getPhoneTime() > 60000) {
+                await fetch('http://localhost:5000/api/dataRecords/', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data),
+                    credentials: 'include',
+                })
+                setPhoneTime(Date.now());
+            }
         }, 5000);
 
         return () => {

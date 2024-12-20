@@ -5,8 +5,8 @@ const DataRecord = new Schema({
     temperature: Number,
     humidity: Number,
     tilt: Number,
-    uv_intensity: Number,
-    light_intensity: Number
+    uv: Number,
+    potentioValue: Number
 });
 
 export default model('DataRecords', DataRecord);

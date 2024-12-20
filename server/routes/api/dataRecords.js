@@ -17,13 +17,14 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
     try {
+        console.log(req.body);
         const newDataRecord = new DataRecordModel({
-            received_at: req.body.received_at,
+            received_at: new Date(),
             temperature: req.body.temperature,
             humidity: req.body.humidity,
             tilt: req.body.tilt,
-            uv_intensity: req.body.uv_intensity,
-            light_intensity: req.body.light_intensity
+            uv: req.body.uv,
+            potentioValue: req.body.potentioValue
         });
         const dataRecord = await newDataRecord.save();
         res.json(dataRecord).status(201);
@@ -38,12 +39,12 @@ router.patch("/:id", async (req, res) => {
         const query = { _id: req.params.id };
         const updates = {
             $set: {
-                received_at: req.body.received_at,
+                received_at: new Date(),
                 temperature: req.body.temperature,
                 humidity: req.body.humidity,
                 tilt: req.body.tilt,
-                uv_intensity: req.body.uv_intensity,
-                light_intensity: req.body.light_intensity
+                uv: req.body.uv,
+                potentioValue: req.body.potentioValue
             },
         };
 
