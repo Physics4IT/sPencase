@@ -6,8 +6,6 @@ import emailjs from "@emailjs/browser";
 // SHADCN
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { Button } from "../ui/button";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
 
 // Others
 import "./accountPage.css"
@@ -16,6 +14,8 @@ import avatar from "../../assets/img/avatar.jpg"
 import InforForm from "./InforForm";
 import NavSection from "./NavSection";
 import { getEmailMsg, getEmailSend, setEmailSend } from "./emailMessage";
+import AccountInfoLayer from "./AccountInfoLayer";
+import { setInfoData, userInfoData } from "./accountInfoData";
 
 function AccountPage() {
     const nav = useNavigate()
@@ -26,10 +26,6 @@ function AccountPage() {
     const [username, setUsername] = useState("sPencase")
     const [email, setEmail] = useState("spencase@gmail.com")
     const [phoneNum, setPhoneNum] = useState("0123456789")
-
-    const [tempName, setTempName] = useState(username)
-    const [tempMail, setTempMail] = useState(email)
-    const [tempPhone, setTempPhone] = useState(phoneNum)
 
     useEffect(() => {
         // Fetch user's data
@@ -52,6 +48,7 @@ function AccountPage() {
                 setUsername(data.username)
                 setEmail(data.email)
                 setPhoneNum(data.phonenum)
+                setInfoData(data.username, data.email, data.phonenum)
 
                 // Send email of logging in successfully
                 if (getEmailSend()) {
@@ -76,17 +73,8 @@ function AccountPage() {
     }, [])
 
     const handleShowChangeInfo = () => {
-        setTempName(username)
-        setTempMail(email)
-        setTempPhone(phoneNum)
-
         const layer = document.getElementById("layer-account-info")
         if (layer) layer.style.display = "flex"
-    }
-
-    const handleHideChangeInfo = () => {
-        const layer = document.getElementById("layer-account-info")
-        if (layer) layer.style.display = "none"
     }
 
     const handleShowLogout = () => {
@@ -99,18 +87,18 @@ function AccountPage() {
         if (layer) layer.style.display = "none"
     }
 
-    const handleSaveInfo = () => {
+    const handleSaveInfo : Function = () => {
         let change = false
-        if (tempName.trim() !== "" && tempName != username) {
-            setUsername(tempName)
+        if (userInfoData.name.trim() !== "" && userInfoData.name != username) {
+            setUsername(userInfoData.name)
             change = true
         }
-        if (tempMail.trim() !== "" && tempMail != email) {
-            setEmail(tempMail)
+        if (userInfoData.mail.trim() !== "" && userInfoData.mail != email) {
+            setEmail(userInfoData.mail)
             change = true
         }
-        if (tempPhone.trim() !== "" && tempPhone != phoneNum) {
-            setPhoneNum(tempPhone)
+        if (userInfoData.phone.trim() !== "" && userInfoData.phone != phoneNum) {
+            setPhoneNum(userInfoData.phone)
             change = true
         }
 
@@ -137,9 +125,9 @@ function AccountPage() {
             },
             credentials: "include",
             body: JSON.stringify({
-                username: tempName,
-                email: tempMail,
-                phonenum: tempPhone
+                username: userInfoData.name,
+                email: userInfoData.mail,
+                phonenum: userInfoData.phone
             })
         })
             .then(response => {
@@ -149,9 +137,6 @@ function AccountPage() {
                 throw new Error("Network response was not ok")
             })
             .catch(error => console.error("Error: ", error))
-            // .then(data => {
-            //     console.log(data)
-            // })
 
         const layer = document.getElementById("layer-account-info")
         if (layer) layer.style.display = "none"
@@ -255,30 +240,9 @@ function AccountPage() {
                 </div>
             </div>
 
-            <div id="layer-account-info" className="overlay">
-                <div className="layer-container w-[50%] h-[70dvh]">
-                    <p className="layer-header">Thay đổi thông tin cá nhân</p>
-                    <div className="layer-info-cont">
-                        <Label htmlFor="input-name" className="layer-content">Tên người dùng</Label>
-                        <Input id="input-name" type="text" value={tempName} onChange={(e) => setTempName(e.target.value)} className="layer-input"/>
-                    </div>
-
-                    <div className="layer-info-cont">
-                        <Label htmlFor="input-mail" className="layer-content">Email</Label>
-                        <Input id="input-mail" type="email" value={tempMail} onChange={(e) => setTempMail(e.target.value)} className="layer-input"/>
-                    </div>
-
-                    <div className="layer-info-cont">
-                        <Label htmlFor="input-phone" className="layer-content">Số điện thoại</Label>
-                        <Input id="input-phone" type="text" value={tempPhone} onChange={(e) => setTempPhone(e.target.value)} className="layer-input"/>
-                    </div>
-
-                    <div className="layer-row">
-                        <div className="layer-acc-exit" onClick={() => handleHideChangeInfo()}>Thoát</div>
-                        <div className="layer-acc-save" onClick={() => handleSaveInfo()}>Lưu</div>
-                    </div>
-                </div>
-            </div>
+            <AccountInfoLayer 
+                funcSaveInfo={() => handleSaveInfo()}
+            />
 
             <div id="layer-logout" className="overlay">
                 <div className="layer-container w-[50%] h-[45dvh]">
