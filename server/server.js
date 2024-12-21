@@ -37,9 +37,21 @@ app.use(routes);
 
 // Auto fetch data from Node-RED
 setInterval(() => {
-
     updateDataRecord();
 }, 5000);
+
+setInterval(async () => {
+    await fetch('http://localhost:1880/receiveData', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            topic: 'sub/sevenSegment',
+            payload: new Date().getHours() * 100 + new Date().getMinutes(),
+        }),
+    });
+}, 1000);
 
 // Start the Express server and store the HTTP server instance
 const server = app.listen(PORT, async () => {
