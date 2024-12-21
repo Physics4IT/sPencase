@@ -137,6 +137,33 @@ function Management() {
                         payload: lcdDisplayValue
                     })
 
+                    
+                    listMessage_add({
+                        topic: "sub/vibration",
+                        payload: vibrationMsg && uv > 8 ? "on" : "off"
+                    })
+
+                    if (autoOnC && distance < 10) {
+                        if (servoMsg === 0) {
+                            for (let i = 0; i < 90; i += 10) {
+                                listMessage_add({
+                                    topic: "sub/servo",
+                                    payload: i.toString()
+                                })
+                            }
+                        }
+                        else {
+                            for (let i = 90; i > 0; i -= 10) {
+                                listMessage_add({
+                                    topic: "sub/servo",
+                                    payload: i.toString()
+                                })
+                            }
+                        }
+                    }
+
+
+
                     setTemperature(data.temperature)
                     setHumidity(data.humidity)
                     setUv(data.uv)
