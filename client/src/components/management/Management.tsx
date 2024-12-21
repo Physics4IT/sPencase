@@ -28,7 +28,8 @@ function Management() {
     
     const [rgbMsg, setRgbMsg] = useState<boolean | undefined>(false)
     const [neopixelMsg, setNeopixelMsg] = useState<boolean | undefined>(false)
-    const [servoMsg, setServoMsg] = useState<boolean | undefined>(false)
+    const [autoOnC, setAutoOnC] = useState<boolean | undefined>(false)
+    const [servoMsg, setServoMsg] = useState(0)
     const [buzzerMsg, setBuzzerMsg] = useState<boolean | undefined>(false)
     const [lcdMsg, setLcdMsg] = useState<boolean | undefined>(false)
     const [vibrationMsg, setVibrationMsg] = useState<boolean | undefined>(false)
@@ -61,7 +62,8 @@ function Management() {
                 setRgbMsg(deviceOption.rgb)
                 setNeopixelMsg(deviceOption.neopixel)
                 setLcdMsg(deviceOption.lcd)
-                setServoMsg(deviceOption.autoOnC)
+                setAutoOnC(deviceOption.autoOnC)
+                setServoMsg(deviceOption.previousDegree)
                 setVibrationMsg(deviceOption.vibration)
                 setBuzzerMsg(deviceOption.buzzer)
             })
@@ -78,12 +80,22 @@ function Management() {
                     topic: "sub/lcd",
                     payload: lcdMsg ? "3 on" : "3 off"
                 })
-                if (servoMsg && distance < 10) {
-                    for (let i = 0; i < 90; i += 10) {
-                        listMessage_add({
-                            topic: "sub/servo",
-                            payload: i.toString()
-                        })
+                if (autoOnC && distance < 10) {
+                    if (servoMsg === 0) {
+                        for (let i = 0; i < 90; i += 10) {
+                            listMessage_add({
+                                topic: "sub/servo",
+                                payload: i.toString()
+                            })
+                        }
+                    }
+                    else {
+                        for (let i = 90; i > 0; i -= 10) {
+                            listMessage_add({
+                                topic: "sub/servo",
+                                payload: i.toString()
+                            })
+                        }
                     }
                 }
                 listMessage_add({
@@ -296,17 +308,27 @@ function Management() {
                                 <div className="info-actions">
                                     <div className="info-action w-[50%] line-after">
                                         <Label htmlFor="auto" className="info-label">Tự động đóng mở</Label>
-                                        <Switch id="auto" className="info-switch" checked={servoMsg}
+                                        <Switch id="auto" className="info-switch" checked={autoOnC}
                                             onCheckedChange={(e) => {
                                                 if (e && distance < 10) {
-                                                    for (let i = 0; i < 90; i += 10) {
-                                                        listMessage_add({
-                                                            topic: "sub/servo",
-                                                            payload: i.toString()
-                                                        })
+                                                    if (servoMsg === 0) {
+                                                        for (let i = 0; i < 90; i += 10) {
+                                                            listMessage_add({
+                                                                topic: "sub/servo",
+                                                                payload: i.toString()
+                                                            })
+                                                        }
+                                                    }
+                                                    else {
+                                                        for (let i = 90; i > 0; i -= 10) {
+                                                            listMessage_add({
+                                                                topic: "sub/servo",
+                                                                payload: i.toString()
+                                                            })
+                                                        }
                                                     }
                                                 }
-                                                setServoMsg(e)
+                                                setAutoOnC(e)
                                                 setSendData(true)
                                             }}
                                         />

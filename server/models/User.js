@@ -22,6 +22,10 @@ const DeviceOption = new Schema({
         type: Boolean,
         default: false
     },
+    previousDegree: {
+        type: Number,
+        default: 0
+    },
     vibration: {
         type: Boolean,
         default: false
@@ -58,6 +62,7 @@ const User = new Schema({
             lcd: false,
             alarm: false,
             autoOnC: false,
+            previousDegree: 0,
             vibration: false
         }
     }
