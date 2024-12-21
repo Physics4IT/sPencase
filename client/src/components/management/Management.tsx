@@ -94,6 +94,7 @@ function Management() {
                     topic: "sub/buzzer",
                     payload: buzzerMsg ? "1" : "0"
                 })
+                setSendData(true)
             })
     }, [])
 
