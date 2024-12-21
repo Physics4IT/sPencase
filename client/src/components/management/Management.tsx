@@ -19,15 +19,85 @@ import { listMessage, listMessage_add, listMessage_removeAll } from "./outputMes
 function Management() {
     const nav = useNavigate()
     const [sendData, setSendData] = useState<boolean>(false)
-
+    
     const [temperature, setTemperature] = useState(24)
     const [humidity, setHumidity] = useState(40)
     const [uv, setUv] = useState(0)
     const [tilt, setTilt] = useState(1)
     const [brightness, setBrightness] = useState(255)
     const [distance, setDistance] = useState(255)
-
+    
+    const [rgbMsg, setRgbMsg] = useState<boolean | undefined>(false)
+    const [neopixelMsg, setNeopixelMsg] = useState<boolean | undefined>(false)
+    const [servoMsg, setServoMsg] = useState<boolean | undefined>(false)
+    const [sevenSegmentMsg, setSevenSegmentMsg] = useState<boolean | undefined>(false)
+    const [buzzerMsg, setBuzzerMsg] = useState<boolean | undefined>(false)
+    const [lcdMsg, setLcdMsg] = useState<boolean | undefined>(false)
+    const [vibrationMsg, setVibrationMsg] = useState<boolean | undefined>(false)
+    
     const [time, setTime] = useState<number>(Date.now())
+
+    useEffect(() => {
+        fetch('http://127.0.0.1:1880/data', {method: 'GET'})
+            .then(response => response.json())
+            .then(data => {
+                setTemperature(data.temperature)
+                setHumidity(data.humidity)
+                setUv(data.uv)
+                setTilt(data.tilt)
+                setBrightness(data.brightness)
+                setDistance(data.distance)
+            })
+            .catch(error => console.error('Error:', error));
+
+        fetch('http://localhost:5000/api/users/me', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        })
+            .then(response => response.json())
+            .then(data => data.deviceOption)
+            .then(deviceOption => {
+                setRgbMsg(deviceOption.rgb)
+                setNeopixelMsg(deviceOption.neopixel)
+                setLcdMsg(deviceOption.lcd)
+                setServoMsg(deviceOption.autoOnC)
+                setVibrationMsg(deviceOption.vibration)
+                setBuzzerMsg(deviceOption.buzzer)
+            })
+            .then(() => {
+                listMessage_add({
+                    topic: "sub/rgb",
+                    payload: rgbMsg ? "on" : "off"
+                })
+                listMessage_add({
+                    topic: "sub/neopixel",
+                    payload: neopixelMsg ? "on" : "off"
+                })
+                listMessage_add({
+                    topic: "sub/lcd",
+                    payload: lcdMsg ? "3 on" : "3 off"
+                })
+                if (servoMsg && distance < 10) {
+                    for (let i = 0; i < 90; i += 10) {
+                        listMessage_add({
+                            topic: "sub/servo",
+                            payload: i.toString()
+                        })
+                    }
+                }
+                listMessage_add({
+                    topic: "sub/vibration",
+                    payload: vibrationMsg && uv > 8 ? "on" : "off"
+                })
+                listMessage_add({
+                    topic: "sub/buzzer",
+                    payload: "0"
+                })
+            })
+    }, [])
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -39,7 +109,7 @@ function Management() {
 
     useEffect(() => {
         const intervalGetData = setInterval(async () => {
-            const data = await fetch('http://127.0.0.1:1880/data', {method: 'GET'})
+            await fetch('http://127.0.0.1:1880/data', {method: 'GET'})
                 .then(response => response.json())
                 .then(data => {
                     if (data.buttonState == 1) {
@@ -55,8 +125,12 @@ function Management() {
                         payload: lcdDisplayValue
                     })
 
-                    setDistance(data.distance)
+                    setTemperature(data.temperature)
+                    setHumidity(data.humidity)
                     setUv(data.uv)
+                    setTilt(data.tilt)
+                    setBrightness(data.brightness)
+                    setDistance(data.distance)
                     
                     // if (Date.now() - getPhoneTime() > 60000) {
                     //     if (data.temperature > 35) {
@@ -71,7 +145,7 @@ function Management() {
                     //             payload: "Độ ẩm đang bất thường!: " + String(data.humidity) + "%"
                     //         })
                     //     }
-                    //     if (data.uv > 11) {
+                    //     if (data.uv > 8) {
                     //         listMessage_add({
                     //             topic: "phoneMsg",
                     //             payload: "Cường độ tia UV đang rất cao!: " + String(data.uv) + " mW/cm2"
@@ -89,18 +163,6 @@ function Management() {
                     return data
                 })
                 .catch(error => console.error('Error:', error));
-                
-            if (Date.now() - getPhoneTime() > 60000) {
-                await fetch('http://localhost:5000/api/dataRecords/', {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data),
-                    credentials: 'include',
-                })
-                setPhoneTime(Date.now());
-            }
         }, 5000);
 
         return () => {
@@ -108,13 +170,6 @@ function Management() {
         }
     }, [])
 
-    const [rgbMsg, setRgbMsg] = useState<boolean | undefined>(false)
-    const [neopixelMsg, setNeopixelMsg] = useState<boolean | undefined>(false)
-    const [servoMsg, setServoMsg] = useState<boolean | undefined>(false)
-    const [sevenSegmentMsg, setSevenSegmentMsg] = useState<boolean | undefined>(false)
-    const [buzzerMsg, setBuzzerMsg] = useState<boolean | undefined>(false)
-    const [lcdMsg, setLcdMsg] = useState<boolean | undefined>(false)
-    const [vibrationMsg, setVibrationMsg] = useState<boolean | undefined>(false)
 
     useEffect(() => {
         if (sendData) {
@@ -243,10 +298,14 @@ function Management() {
                                         <Label htmlFor="auto" className="info-label">Tự động đóng mở</Label>
                                         <Switch id="auto" className="info-switch" checked={servoMsg}
                                             onCheckedChange={(e) => {
-                                                listMessage_add({
-                                                    topic: "sub/servo",
-                                                    payload: e && distance < 10 ? "90" : "0"
-                                                })
+                                                if (e && distance < 10) {
+                                                    for (let i = 0; i < 90; i += 10) {
+                                                        listMessage_add({
+                                                            topic: "sub/servo",
+                                                            payload: i.toString()
+                                                        })
+                                                    }
+                                                }
                                                 setServoMsg(e)
                                                 setSendData(true)
                                             }}

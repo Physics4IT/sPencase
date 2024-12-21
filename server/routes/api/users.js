@@ -1,14 +1,14 @@
 import express from 'express';
-import { signup, login, logout, updateInfo, deleteUser } from '../../controllers/users.js';
+import { signup, login, logout, updateInfo, deleteUser, changeDeviceOption } from '../../controllers/users.js';
 import { verifyToken } from '../../middlewares/auth.js';
 import UserModel from '../../models/User.js';
-import { ObjectId } from 'mongodb';
 
 const router = express.Router();
 
 router.post('/register', signup);
 router.post('/login', login);
 router.patch('/update', verifyToken, updateInfo);
+router.patch('/changeDeviceOption', verifyToken, changeDeviceOption);
 router.get('/logout', logout);
 router.get('/delete', verifyToken, deleteUser);
 router.get('/me', verifyToken, async (req, res) => {

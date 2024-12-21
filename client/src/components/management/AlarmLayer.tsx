@@ -170,7 +170,7 @@ function AlarmLayer({
                     <p className="layer-header">Báo thức</p>
                     <AlarmClockPlus className="h-8 w-8 text-slate-700 hover:text-slate-400 cursor-pointer" onClick={() => prevAddAlarm()}/>
                 </div>
-                <div className={`layer-alarm-content ${data && 'overflow-y-scroll'}`}>
+                <div className={`layer-alarm-content ${data && data.length > 0 && 'overflow-y-scroll'}`}>
                     {data?.map((value: alarmData, key: number) => {
                         return (
                             <div key={key} className={`alarm-container ${value.state ? 'border-green-600 bg-green-100' : 'border-zinc-800 bg-slate-200'}`}>
@@ -205,7 +205,7 @@ function AlarmLayer({
                             </div>
                         )
                     })}
-                    {!data && 
+                    {(!data || data.length == 0) && 
                         <p className="text-2xl font-thin text-stone-700">Không có báo thức nào để hiển thị.</p>
                     }
                 </div>

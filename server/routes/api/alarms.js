@@ -11,7 +11,7 @@ router.get('/', verifyToken, async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     const alarm = await AlarmModel.find({ _id: req.params.id });
-    if (!alarm) res.send('Not found').status(404);
+    if (!alarm) res.json('Not found').status(404);
     else res.json(alarm).status(200);
 });
 
@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
         res.json(newAlarms).status(201);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Error adding record');
+        res.status(500).json('Error adding record');
     }
 });
 
@@ -34,7 +34,7 @@ router.patch('/:id', async (req, res) => {
         res.json(alarm).status(200);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Error updating record');
+        res.status(500).json('Error updating record');
     }
 });
 
@@ -45,7 +45,7 @@ router.delete('/:id', async (req, res) => {
         res.json(alarm).status(200);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Error deleting record');
+        res.status(500).json('Error deleting record');
     }
 });
 
@@ -55,7 +55,7 @@ router.delete('/', verifyToken, async (req, res) => {
         res.json(alarms).status(200);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Error deleting record');
+        res.status(500).json('Error deleting record');
     }
 })
 

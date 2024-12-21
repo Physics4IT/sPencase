@@ -1,6 +1,5 @@
 import express from "express";
 import DataRecordModel from "../../models/DataRecord.js";
-import { ObjectId } from "mongodb";
 
 const router = express.Router();
 
@@ -17,7 +16,6 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
     try {
-        console.log(req.body);
         const newDataRecord = new DataRecordModel({
             received_at: new Date(),
             temperature: req.body.temperature,

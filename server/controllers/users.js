@@ -9,7 +9,7 @@ export const signup = async (req, res) => {
     try {
         const existingUser = await UserModel.findOne({ $or: [{ username }, { email }, { phonenum }] });
         if (existingUser) {
-            return res.status(409).send("User already exists");
+            return res.status(409).json("User already exists");
         }
 
         const hashedPassword = await bcrypt.hash(password, 12);
@@ -26,7 +26,7 @@ export const signup = async (req, res) => {
     }
     catch (err) {
         console.error(err);
-        res.status(500).send("Error signing up");
+        res.status(500).json("Error signing up");
     }
 }
 
@@ -39,22 +39,22 @@ export const login = async (req, res) => {
             .select("+password");
 
         if (!user) {
-            return res.status(401).send("User not found");
+            return res.status(401).json("User not found");
         }
 
         const isValidPassword = await bcrypt.compare(password, user.password);
         if (!isValidPassword) {
-            return res.status(401).send("Invalid password");
+            return res.status(401).json("Invalid password");
         }
 
         const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET, {
-            expiresIn: 86400 // 24 hours
+            expiresIn: 3600 // 1 hours
         });
         res.cookie("x-access-token", token, {
-            maxAge: 86400 * 1000, // 24 hours
+            maxAge: 3600 * 1000, // 1 hours
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: "lax"
+            sameSite: "strict"
         }).status(200).json({ message: "Login successful", user, token });
 
         const session = new SessionModel({
@@ -80,7 +80,22 @@ export const updateInfo = async(req, res) => {
     }
     catch (err) {
         console.error(err);
-        res.status(500).send("Error updating user info");
+        res.status(500).json("Error updating user info");
+    }
+}
+
+export const changeDeviceOption = async(req, res) => {
+    const { rgb, neopixel, lcd, alarm, autoOnC, vibration } = req.body;
+    const token = req.cookies["x-access-token"];
+    const decoded = jwt.decode(token);
+
+    try {
+        await UserModel.findByIdAndUpdate(decoded.id, { deviceOption: { rgb, neopixel, lcd, alarm, autoOnC, vibration } });
+        res.status(200).json("Device option updated");
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json("Error updating device option");
     }
 }
 
@@ -94,7 +109,7 @@ export const logout = async (req, res) => {
     }
     catch (err) {
         console.error(err);
-        res.status(500).send("Error logging out");
+        res.status(500).json("Error logging out");
     }
 }
 
@@ -109,6 +124,6 @@ export const deleteUser = async (req, res) => {
     }
     catch (err) {
         console.error(err);
-        res.status(500).send("Error deleting user");
+        res.status(500).json("Error deleting user");
     }
 }

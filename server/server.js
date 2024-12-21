@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import routes from "./routes/index.js";
-import connectDB from "./db/connection.js";
+import { connectDB, updateDataRecord} from "./db/connection.js";
 import cookieParser from "cookie-parser";
 
 const PORT = process.env.PORT || 5000;
@@ -17,8 +17,29 @@ app.use(express.urlencoded({ extended: true }));
 
 // Connect to MongoDB
 connectDB();
+
+// Route
 app.use(cookieParser());
+app.use((req, res, next) => {
+    const token = req.cookies['x-access-token'];
+
+    if (token) {
+        res.cookie("x-access-token", token, {
+            maxAge: 3600 * 1000, // 1 hours
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: "strict"
+        });
+    }
+    next();
+});
 app.use(routes);
+
+// Auto fetch data from Node-RED
+setInterval(() => {
+
+    updateDataRecord();
+}, 5000);
 
 // Start the Express server and store the HTTP server instance
 const server = app.listen(PORT, async () => {
