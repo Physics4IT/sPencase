@@ -116,6 +116,7 @@ function Management() {
                             topic: "sub/button",
                             payload: "clicked"
                         })
+                        alert("Button clicked!")
                     }
 
                     const lcdDisplayValue = "2 Temp: " + String(data.temperature).padStart(10, ' ') + "Humid: " + String(data.humidity).padStart(9, ' ')
@@ -162,7 +163,7 @@ function Management() {
                     return data
                 })
                 .catch(error => console.error('Error:', error));
-        }, 5000);
+        }, 1000);
 
         return () => {
             clearInterval(intervalGetData)

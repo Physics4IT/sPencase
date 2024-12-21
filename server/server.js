@@ -51,7 +51,7 @@ setInterval(async () => {
             payload: new Date().getHours() * 100 + new Date().getMinutes(),
         }),
     });
-}, 1000);
+}, 30000);
 
 // Start the Express server and store the HTTP server instance
 const server = app.listen(PORT, async () => {
