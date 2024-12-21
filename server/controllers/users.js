@@ -7,7 +7,7 @@ export const signup = async (req, res) => {
     const { username, email, password, phonenum } = req.body;
 
     try {
-        const existingUser = await UserModel.findOne({ $or: [{ username }, { email }, { phonenum }] });
+        const existingUser = await UserModel.findOne({ username });
         if (existingUser) {
             return res.status(409).json("User already exists");
         }
