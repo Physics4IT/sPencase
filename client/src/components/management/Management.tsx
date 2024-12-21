@@ -29,7 +29,6 @@ function Management() {
     const [rgbMsg, setRgbMsg] = useState<boolean | undefined>(false)
     const [neopixelMsg, setNeopixelMsg] = useState<boolean | undefined>(false)
     const [servoMsg, setServoMsg] = useState<boolean | undefined>(false)
-    const [sevenSegmentMsg, setSevenSegmentMsg] = useState<boolean | undefined>(false)
     const [buzzerMsg, setBuzzerMsg] = useState<boolean | undefined>(false)
     const [lcdMsg, setLcdMsg] = useState<boolean | undefined>(false)
     const [vibrationMsg, setVibrationMsg] = useState<boolean | undefined>(false)
@@ -93,7 +92,7 @@ function Management() {
                 })
                 listMessage_add({
                     topic: "sub/buzzer",
-                    payload: "0"
+                    payload: buzzerMsg ? "1" : "0"
                 })
             })
     }, [])
