@@ -104,7 +104,7 @@ function Management() {
                 })
                 listMessage_add({
                     topic: "sub/buzzer",
-                    payload: buzzerMsg ? "1" : "0"
+                    payload: buzzerMsg ? "on" : "off"
                 })
                 setSendData(true)
             })
@@ -292,7 +292,16 @@ function Management() {
                                 <div className="info-actions">
                                     <div className="info-action w-[50%] line-after">
                                         <Label htmlFor="alarm" className="info-label">Báo thức</Label>
-                                        <Switch id="alarm" className="info-switch"/>
+                                        <Switch id="alarm" className="info-switch" checked={buzzerMsg}
+                                        onCheckedChange={(e) => {
+                                                listMessage_add({
+                                                    topic: "sub/buzzer",
+                                                    payload: e ? "on" : "off"
+                                                })
+                                                setBuzzerMsg(e)
+                                                setSendData(true)
+                                            }}/>
+                                        
                                     </div>
                                     <div className="info-action w-[50%]">
                                         <Label className="info-label">Cài đặt</Label>
