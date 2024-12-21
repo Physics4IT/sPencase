@@ -13,7 +13,6 @@ import "./management.css"
 import bg_img from "../../assets/img/bg_img.jpg"
 import web_logo from "../../assets/img/logo.png"
 import AlarmLayer from "./AlarmLayer"
-import { getPhoneTime, setPhoneTime } from "./sendPhoneTime"
 import { listMessage, listMessage_add, listMessage_removeAll } from "./outputMessage"
 
 function Management() {

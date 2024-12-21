@@ -1,5 +1,5 @@
 import { AlarmClockPlus, CircleMinus } from "lucide-react"
-import React, { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Input } from "../ui/input"
 
 export type alarmData = {

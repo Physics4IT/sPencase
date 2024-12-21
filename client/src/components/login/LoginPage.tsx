@@ -24,28 +24,36 @@ function LoginPage() {
     }, [])
 
     const handleLogin = async () => {
-        const data = {
-            username: username,
-            password: password
-        }
-
-        const response = await fetch("http://localhost:5000/api/users/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "include",
-            body: JSON.stringify(data)
-        })
-
-        if (response.ok) {
-            const res = await response.json()
-            console.log(res)
-            setEmailMsg("Tài khoản của bạn đã được đăng nhập.")
-            setEmailSend()
-            nav("/account")
+        if (username.trim() == "" || password.trim() == "") {
+            alert("Thiếu thông tin quan trọng!")
         } else {
-            console.log("Error")
+            const data = {
+                username: username,
+                password: password
+            }
+    
+            await fetch("http://localhost:5000/api/users/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify(data)
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        const res = response.json()
+                        console.log(res)
+                        setEmailMsg("Tài khoản của bạn đã được đăng nhập.")
+                        setEmailSend()
+                        nav("/account")
+                    } else {
+                        console.log("Error")
+                        alert("Tên đăng nhập hoặc mật khẩu không đúng!")
+                    }
+                    return response
+                })
+                .catch((error) => console.log(error))
         }
     }
 

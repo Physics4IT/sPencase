@@ -18,27 +18,32 @@ function RegisterPage() {
     const inputRef = useRef<HTMLInputElement | null>(null)
 
     const handleRegister = async () => {
-        const data = {
-            username: username,
-            email: email,
-            password: password,
-            phonenum: ""
-        }
-
-        const response = await fetch("http://localhost:5000/api/users/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        })
-
-        if (response.ok) {
-            const res = await response.json()
-            console.log(res)
-            nav("/login")
+        if (username.trim() == "" || password.trim() == "") {
+            alert("Thiếu thông tin quan trọng!")
         } else {
-            console.log("Error")
+            const data = {
+                username: username,
+                email: email,
+                password: password,
+                phonenum: ""
+            }
+    
+            const response = await fetch("http://localhost:5000/api/users/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+    
+            if (response.ok) {
+                const res = await response.json()
+                console.log(res)
+                nav("/login")
+            } else {
+                console.log("Error")
+                alert("Tài khoản đã tồn tại!")
+            }
         }
     }
 

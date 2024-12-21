@@ -16,6 +16,8 @@ import NavSection from "./NavSection";
 import { getEmailMsg, getEmailSend, setEmailSend } from "./emailMessage";
 import AccountInfoLayer from "./AccountInfoLayer";
 import { setInfoData, userInfoData } from "./accountInfoData";
+import LogoutWarning from "./logoutWarning";
+import DeleteAccount from "./deleteWarning";
 
 function AccountPage() {
     const nav = useNavigate()
@@ -28,7 +30,6 @@ function AccountPage() {
     const [phoneNum, setPhoneNum] = useState("0123456789")
 
     useEffect(() => {
-        // Fetch user's data
         fetch("http://localhost:5000/api/users/me", {
             method: "GET",
             headers: {
@@ -82,9 +83,9 @@ function AccountPage() {
         if (layer) layer.style.display = "flex"
     }
 
-    const handleHideLogout = () => {
-        const layer = document.getElementById("layer-logout")
-        if (layer) layer.style.display = "none"
+    const handleShowDelAcc = () => {
+        const layer = document.getElementById("layer-delete-account")
+        if (layer) layer.style.display = "flex"
     }
 
     const handleSaveInfo : Function = () => {
@@ -170,7 +171,7 @@ function AccountPage() {
 
     const handleDelete = () => {
         fetch("http://localhost:5000/api/users/delete", {
-            method: "DELETE",
+            method: "GET",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -183,9 +184,9 @@ function AccountPage() {
                 throw new Error("Network response was not ok")
             })
             .catch(error => console.error("Error: ", error))
-            // .then(data => {
-            //     console.log(data)
-            // })
+            .then(data => {
+                console.log(data)
+            })
 
         nav("/")
     }
@@ -233,29 +234,16 @@ function AccountPage() {
                             </CardHeader>
                             <CardContent className="flex flex-row justify-center items-center">
                                 <Button className="btn-logout mr-4" onClick={() => handleShowLogout()} >Đăng xuất</Button>
-                                <Button className="btn-del ml-4">Xóa tài khoản</Button>
+                                <Button className="btn-del ml-4" onClick={() => handleShowDelAcc()}>Xóa tài khoản</Button>
                             </CardContent>
                         </Card>
                     </div>
                 </div>
             </div>
 
-            <AccountInfoLayer 
-                funcSaveInfo={() => handleSaveInfo()}
-            />
-
-            <div id="layer-logout" className="overlay">
-                <div className="layer-container w-[50%] h-[45dvh]">
-                    <p className="layer-header">Bạn có chắc chắn với sự lựa chọn này?</p>
-                    <p className="layer-content">Điều này sẽ đăng xuất tài khoản của bạn khỏi hệ thống sPencase.</p>
-                    <p className="layer-content">Đừng lo lắng, tài khoản của bạn sẽ không bị mất.</p>
-
-                    <div className="layer-row">
-                        <div className="layer-acc-exit mt-4" onClick={() => handleHideLogout()}>Hủy</div>
-                        <div className="layer-acc-save mt-4" onClick={() => handleLogout()}>Tiếp tục</div>
-                    </div>
-                </div>
-            </div>
+            <AccountInfoLayer funcSaveInfo={() => handleSaveInfo()}/>
+            <LogoutWarning logOut={() => handleLogout()}/>
+            <DeleteAccount deleteAcc={() => handleDelete()}/>
         </div>
     )
 }
