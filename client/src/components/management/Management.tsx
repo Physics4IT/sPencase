@@ -162,8 +162,6 @@ function Management() {
                         }
                     }
 
-
-
                     setTemperature(data.temperature)
                     setHumidity(data.humidity)
                     setUv(data.uv)
