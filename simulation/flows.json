@@ -1,1 +1,624 @@
-[{"id":"2db4c2eb33a80e37","type":"tab","label":"sPencase","disabled":false,"info":"","env":[]},{"id":"f58a7ef55ede23d1","type":"mqtt out","z":"2db4c2eb33a80e37","name":"sub/rgb","topic":"sub/rgb","qos":"","retain":"","respTopic":"","contentType":"","userProps":"","correl":"","expiry":"","broker":"e75c7701770fa460","x":800,"y":40,"wires":[]},{"id":"63237f6e45552ea9","type":"switch","z":"2db4c2eb33a80e37","name":"","property":"topic","propertyType":"msg","rules":[{"t":"eq","v":"sub/rgb","vt":"str"},{"t":"eq","v":"sub/neopixel","vt":"str"},{"t":"eq","v":"sub/servo","vt":"str"},{"t":"eq","v":"sub/sevenSegment","vt":"str"},{"t":"eq","v":"sub/buzzer","vt":"str"},{"t":"eq","v":"sub/lcd","vt":"str"},{"t":"eq","v":"sub/vibration","vt":"str"},{"t":"eq","v":"sub/button","vt":"str"},{"t":"eq","v":"phoneMsg","vt":"str"}],"checkall":"true","repair":false,"outputs":9,"x":570,"y":280,"wires":[["f58a7ef55ede23d1"],["a4ac33c8317adf91"],["018fad69ae144be0"],["fb213add90f520ad"],["c134ce158dc0afac"],["63f9e4085b3558aa"],["6e458c4cec85461d"],["2737597ff8460c37"],["1f5470ad51039380"]]},{"id":"a4ac33c8317adf91","type":"mqtt out","z":"2db4c2eb33a80e37","name":"sub/neopixel","topic":"sub/neopixel","qos":"","retain":"","respTopic":"","contentType":"","userProps":"","correl":"","expiry":"","broker":"e75c7701770fa460","x":810,"y":100,"wires":[]},{"id":"018fad69ae144be0","type":"mqtt out","z":"2db4c2eb33a80e37","name":"sub/servo","topic":"sub/servo","qos":"","retain":"","respTopic":"","contentType":"","userProps":"","correl":"","expiry":"","broker":"e75c7701770fa460","x":800,"y":160,"wires":[]},{"id":"fb213add90f520ad","type":"mqtt out","z":"2db4c2eb33a80e37","name":"sub/sevenSegment","topic":"sub/sevenSegment","qos":"","retain":"","respTopic":"","contentType":"","userProps":"","correl":"","expiry":"","broker":"e75c7701770fa460","x":830,"y":220,"wires":[]},{"id":"c134ce158dc0afac","type":"mqtt out","z":"2db4c2eb33a80e37","name":"sub/buzzer","topic":"sub/buzzer","qos":"","retain":"","respTopic":"","contentType":"","userProps":"","correl":"","expiry":"","broker":"e75c7701770fa460","x":810,"y":280,"wires":[]},{"id":"63f9e4085b3558aa","type":"mqtt out","z":"2db4c2eb33a80e37","name":"sub/lcd","topic":"sub/lcd","qos":"","retain":"","respTopic":"","contentType":"","userProps":"","correl":"","expiry":"","broker":"e75c7701770fa460","x":800,"y":340,"wires":[]},{"id":"6e458c4cec85461d","type":"mqtt out","z":"2db4c2eb33a80e37","name":"sub/vibration","topic":"sub/vibration","qos":"","retain":"","respTopic":"","contentType":"","userProps":"","correl":"","expiry":"","broker":"e75c7701770fa460","x":810,"y":400,"wires":[]},{"id":"fcfdde1c924239ca","type":"mqtt in","z":"2db4c2eb33a80e37","name":"","topic":"pub/potentiometer","qos":"2","datatype":"auto-detect","broker":"e75c7701770fa460","nl":false,"rap":true,"rh":0,"inputs":0,"x":150,"y":480,"wires":[["f4cb5b49bcd2b714"]]},{"id":"b07c4da5d182ec5f","type":"mqtt in","z":"2db4c2eb33a80e37","name":"","topic":"pub/button","qos":"2","datatype":"auto-detect","broker":"e75c7701770fa460","nl":false,"rap":true,"rh":0,"inputs":0,"x":120,"y":540,"wires":[["f4cb5b49bcd2b714"]]},{"id":"7383998d41e718d0","type":"mqtt in","z":"2db4c2eb33a80e37","name":"","topic":"pub/photoresistor","qos":"2","datatype":"auto-detect","broker":"e75c7701770fa460","nl":false,"rap":true,"rh":0,"inputs":0,"x":140,"y":600,"wires":[["f4cb5b49bcd2b714"]]},{"id":"358f82e0590b630a","type":"mqtt in","z":"2db4c2eb33a80e37","name":"","topic":"pub/dht","qos":"2","datatype":"auto-detect","broker":"e75c7701770fa460","nl":false,"rap":true,"rh":0,"inputs":0,"x":110,"y":660,"wires":[["f4cb5b49bcd2b714"]]},{"id":"216634bebc6898af","type":"mqtt in","z":"2db4c2eb33a80e37","name":"","topic":"pub/uvSensor","qos":"2","datatype":"auto-detect","broker":"e75c7701770fa460","nl":false,"rap":true,"rh":0,"inputs":0,"x":130,"y":720,"wires":[["f4cb5b49bcd2b714"]]},{"id":"a7dcc685653a4485","type":"mqtt in","z":"2db4c2eb33a80e37","name":"","topic":"pub/tiltSensor","qos":"2","datatype":"auto-detect","broker":"e75c7701770fa460","nl":false,"rap":true,"rh":0,"inputs":0,"x":130,"y":780,"wires":[["f4cb5b49bcd2b714"]]},{"id":"7968c6b523736312","type":"mqtt in","z":"2db4c2eb33a80e37","name":"","topic":"pub/ultrasonicSensor","qos":"2","datatype":"auto-detect","broker":"e75c7701770fa460","nl":false,"rap":true,"rh":0,"inputs":0,"x":160,"y":840,"wires":[["f4cb5b49bcd2b714"]]},{"id":"a103bd2443779fc2","type":"debug","z":"2db4c2eb33a80e37","name":"Request result","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","targetType":"msg","statusVal":"","statusType":"auto","x":860,"y":620,"wires":[]},{"id":"601b6e4ad469a2c1","type":"http request","z":"2db4c2eb33a80e37","name":"","method":"GET","ret":"txt","paytoqs":"ignore","url":"https://www.pushsafer.com/api?k=JBmecGVQ8v0zioaUPrNJ&m={{payload}}","tls":"","persist":false,"proxy":"","insecureHTTPParser":false,"authType":"","senderr":false,"headers":[],"x":1070,"y":520,"wires":[[]]},{"id":"1f5470ad51039380","type":"function","z":"2db4c2eb33a80e37","name":"Convert phone message","func":"\nreturn msg;","outputs":1,"timeout":0,"noerr":0,"initialize":"","finalize":"","libs":[],"x":850,"y":520,"wires":[["601b6e4ad469a2c1"]]},{"id":"20939369a1ec183e","type":"http in","z":"2db4c2eb33a80e37","name":"","url":"/data","method":"get","upload":false,"swaggerDoc":"","x":400,"y":580,"wires":[["65eaa6ca499a4eb5"]]},{"id":"15841936dfa5316d","type":"http response","z":"2db4c2eb33a80e37","name":"","statusCode":"","headers":{},"x":830,"y":700,"wires":[]},{"id":"65eaa6ca499a4eb5","type":"function","z":"2db4c2eb33a80e37","name":"convert to JS Object","func":"switch (msg.topic) {\n    case \"pub/potentiometer\":\n        global.set(\"potentioValue\", msg.payload.value);\n        break;\n    \n    case \"pub/button\":\n        global.set(\"buttonState\", msg.payload.value);\n        break;\n\n    case \"pub/photoresistor\":\n        global.set(\"brightness\", msg.payload.value);\n        break;\n\n    case \"pub/dht\":\n        {\n            if (\"temperature\" in msg.payload) \n                global.set(\"temperature\", msg.payload.temperature);\n            if (\"humidity\" in msg.payload)\n                global.set(\"humidity\", msg.payload.humidity);\n        }\n        break;\n\n    case \"pub/uvSensor\":\n        global.set(\"uv\", msg.payload.value);\n        break;\n\n    case \"pub/tiltSensor\":\n        global.set(\"tilt\", msg.payload.value);\n        break;\n\n    case \"pub/ultrasonicSensor\":\n        global.set(\"distance\", msg.payload.value);\n        break;\n    \n    default:\n        break;\n}\n\nmsg.payload = Object({\n    \"potentioValue\": global.get(\"potentioValue\"),\n    \"buttonState\": global.get(\"buttonState\"),\n    \"brightness\": global.get(\"brightness\"),\n    \"temperature\": global.get(\"temperature\"),\n    \"humidity\": global.get(\"humidity\"),\n    \"uv\": global.get(\"uv\"),\n    \"tilt\": global.get(\"tilt\"),\n    \"distance\": global.get(\"distance\"),\n});\n\nreturn msg;","outputs":1,"timeout":0,"noerr":0,"initialize":"// Code added here will be run once\n// whenever the node is started.\nglobal.set(\"potentioValue\", 0);\nglobal.set(\"buttonState\", 0); // 1: Clicked, 0: Not clicked\nglobal.set(\"brightness\", 0);\nglobal.set(\"temperature\", 0);\nglobal.set(\"humidity\", 0);\nglobal.set(\"uv\", 0);\nglobal.set(\"tilt\", 0);\nglobal.set(\"distance\", 0);","finalize":"","libs":[],"x":640,"y":660,"wires":[["15841936dfa5316d","a103bd2443779fc2"]]},{"id":"f4cb5b49bcd2b714","type":"json","z":"2db4c2eb33a80e37","name":"","property":"payload","action":"obj","pretty":false,"x":410,"y":660,"wires":[["65eaa6ca499a4eb5"]]},{"id":"e90b505b3b988da4","type":"comment","z":"2db4c2eb33a80e37","name":"Đọc note này nèee","info":"Dữ liệu được gửi đến từ <mqtt in> \ncần phải viết theo dạng JSON string\nđể sau khi qua node <json> thì sẽ được\nchuyển thành JavaScript Object. \nKhi qua node <function> kế thì \nsẽ được lưu vào biến toàn cục tương ứng\ndựa trên object được tạo.\nChi tiết cấu trúc JSON string thì đọc\nở node function xem switch case set những\ngiá trị gì.","x":490,"y":760,"wires":[]},{"id":"2142fb1c2cb7a24e","type":"http in","z":"2db4c2eb33a80e37","name":"","url":"/receiveData","method":"post","upload":false,"swaggerDoc":"","x":150,"y":240,"wires":[["15388a2dcb0c799b","d728c48416fbb9a8"]]},{"id":"664266963948b6d1","type":"http response","z":"2db4c2eb33a80e37","name":"","statusCode":"","headers":{},"x":530,"y":160,"wires":[]},{"id":"15388a2dcb0c799b","type":"function","z":"2db4c2eb33a80e37","name":"return result","func":"msg.payload = \"Send data successful!\"\nreturn msg;","outputs":1,"timeout":0,"noerr":0,"initialize":"","finalize":"","libs":[],"x":350,"y":200,"wires":[["664266963948b6d1"]]},{"id":"2737597ff8460c37","type":"mqtt out","z":"2db4c2eb33a80e37","name":"sub/button","topic":"sub/button","qos":"","retain":"","respTopic":"","contentType":"","userProps":"","correl":"","expiry":"","broker":"e75c7701770fa460","x":810,"y":460,"wires":[]},{"id":"d728c48416fbb9a8","type":"function","z":"2db4c2eb33a80e37","name":"get message","func":"return msg.payload;","outputs":1,"timeout":0,"noerr":0,"initialize":"","finalize":"","libs":[],"x":350,"y":280,"wires":[["63237f6e45552ea9"]]},{"id":"e75c7701770fa460","type":"mqtt-broker","name":"","broker":"broker.emqx.io","port":"1883","clientid":"","autoConnect":true,"usetls":false,"protocolVersion":"4","keepalive":"60","cleansession":true,"autoUnsubscribe":true,"birthTopic":"","birthQos":"0","birthRetain":"false","birthPayload":"","birthMsg":{},"closeTopic":"","closeQos":"0","closeRetain":"false","closePayload":"","closeMsg":{},"willTopic":"","willQos":"0","willRetain":"false","willPayload":"","willMsg":{},"userProps":"","sessionExpiry":""}]
+[
+    {
+        "id": "2db4c2eb33a80e37",
+        "type": "tab",
+        "label": "sPencase",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "f58a7ef55ede23d1",
+        "type": "mqtt out",
+        "z": "2db4c2eb33a80e37",
+        "name": "sub/rgb",
+        "topic": "sub/rgb",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e75c7701770fa460",
+        "x": 800,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "63237f6e45552ea9",
+        "type": "switch",
+        "z": "2db4c2eb33a80e37",
+        "name": "",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "sub/rgb",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "sub/neopixel",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "sub/servo",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "sub/sevenSegment",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "sub/buzzer",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "sub/lcd",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "sub/vibration",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "sub/button",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "phoneMsg",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 9,
+        "x": 570,
+        "y": 280,
+        "wires": [
+            [
+                "f58a7ef55ede23d1"
+            ],
+            [
+                "a4ac33c8317adf91"
+            ],
+            [
+                "018fad69ae144be0"
+            ],
+            [
+                "fb213add90f520ad"
+            ],
+            [
+                "c134ce158dc0afac"
+            ],
+            [
+                "63f9e4085b3558aa"
+            ],
+            [
+                "6e458c4cec85461d"
+            ],
+            [
+                "2737597ff8460c37"
+            ],
+            [
+                "1f5470ad51039380"
+            ]
+        ]
+    },
+    {
+        "id": "a4ac33c8317adf91",
+        "type": "mqtt out",
+        "z": "2db4c2eb33a80e37",
+        "name": "sub/neopixel",
+        "topic": "sub/neopixel",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e75c7701770fa460",
+        "x": 810,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "018fad69ae144be0",
+        "type": "mqtt out",
+        "z": "2db4c2eb33a80e37",
+        "name": "sub/servo",
+        "topic": "sub/servo",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e75c7701770fa460",
+        "x": 800,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "fb213add90f520ad",
+        "type": "mqtt out",
+        "z": "2db4c2eb33a80e37",
+        "name": "sub/sevenSegment",
+        "topic": "sub/sevenSegment",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e75c7701770fa460",
+        "x": 830,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "c134ce158dc0afac",
+        "type": "mqtt out",
+        "z": "2db4c2eb33a80e37",
+        "name": "sub/buzzer",
+        "topic": "sub/buzzer",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e75c7701770fa460",
+        "x": 810,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "63f9e4085b3558aa",
+        "type": "mqtt out",
+        "z": "2db4c2eb33a80e37",
+        "name": "sub/lcd",
+        "topic": "sub/lcd",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e75c7701770fa460",
+        "x": 800,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "6e458c4cec85461d",
+        "type": "mqtt out",
+        "z": "2db4c2eb33a80e37",
+        "name": "sub/vibration",
+        "topic": "sub/vibration",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e75c7701770fa460",
+        "x": 810,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "fcfdde1c924239ca",
+        "type": "mqtt in",
+        "z": "2db4c2eb33a80e37",
+        "name": "",
+        "topic": "pub/potentiometer",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e75c7701770fa460",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 480,
+        "wires": [
+            [
+                "f4cb5b49bcd2b714"
+            ]
+        ]
+    },
+    {
+        "id": "b07c4da5d182ec5f",
+        "type": "mqtt in",
+        "z": "2db4c2eb33a80e37",
+        "name": "",
+        "topic": "pub/button",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e75c7701770fa460",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 540,
+        "wires": [
+            [
+                "f4cb5b49bcd2b714"
+            ]
+        ]
+    },
+    {
+        "id": "7383998d41e718d0",
+        "type": "mqtt in",
+        "z": "2db4c2eb33a80e37",
+        "name": "",
+        "topic": "pub/photoresistor",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e75c7701770fa460",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 600,
+        "wires": [
+            [
+                "f4cb5b49bcd2b714"
+            ]
+        ]
+    },
+    {
+        "id": "358f82e0590b630a",
+        "type": "mqtt in",
+        "z": "2db4c2eb33a80e37",
+        "name": "",
+        "topic": "pub/dht",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e75c7701770fa460",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 660,
+        "wires": [
+            [
+                "f4cb5b49bcd2b714"
+            ]
+        ]
+    },
+    {
+        "id": "216634bebc6898af",
+        "type": "mqtt in",
+        "z": "2db4c2eb33a80e37",
+        "name": "",
+        "topic": "pub/uvSensor",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e75c7701770fa460",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 720,
+        "wires": [
+            [
+                "f4cb5b49bcd2b714"
+            ]
+        ]
+    },
+    {
+        "id": "a7dcc685653a4485",
+        "type": "mqtt in",
+        "z": "2db4c2eb33a80e37",
+        "name": "",
+        "topic": "pub/tiltSensor",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e75c7701770fa460",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 780,
+        "wires": [
+            [
+                "f4cb5b49bcd2b714"
+            ]
+        ]
+    },
+    {
+        "id": "7968c6b523736312",
+        "type": "mqtt in",
+        "z": "2db4c2eb33a80e37",
+        "name": "",
+        "topic": "pub/ultrasonicSensor",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e75c7701770fa460",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 840,
+        "wires": [
+            [
+                "f4cb5b49bcd2b714"
+            ]
+        ]
+    },
+    {
+        "id": "a103bd2443779fc2",
+        "type": "debug",
+        "z": "2db4c2eb33a80e37",
+        "name": "Request result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 860,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "601b6e4ad469a2c1",
+        "type": "http request",
+        "z": "2db4c2eb33a80e37",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://www.pushsafer.com/api?k=JBmecGVQ8v0zioaUPrNJ&m={{payload}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1070,
+        "y": 520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1f5470ad51039380",
+        "type": "function",
+        "z": "2db4c2eb33a80e37",
+        "name": "Convert phone message",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 520,
+        "wires": [
+            [
+                "601b6e4ad469a2c1"
+            ]
+        ]
+    },
+    {
+        "id": "20939369a1ec183e",
+        "type": "http in",
+        "z": "2db4c2eb33a80e37",
+        "name": "",
+        "url": "/data",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 400,
+        "y": 580,
+        "wires": [
+            [
+                "65eaa6ca499a4eb5"
+            ]
+        ]
+    },
+    {
+        "id": "15841936dfa5316d",
+        "type": "http response",
+        "z": "2db4c2eb33a80e37",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 830,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "65eaa6ca499a4eb5",
+        "type": "function",
+        "z": "2db4c2eb33a80e37",
+        "name": "convert to JS Object",
+        "func": "switch (msg.topic) {\n    case \"pub/potentiometer\":\n        global.set(\"brightness\", msg.payload.value);\n        break;\n    \n    case \"pub/button\":\n        global.set(\"buttonState\", msg.payload.value);\n        break;\n\n    case \"pub/photoresistor\":\n        global.set(\"envLightRes\", msg.payload.value);\n        break;\n\n    case \"pub/dht\":\n        {\n            if (\"temperature\" in msg.payload) \n                global.set(\"temperature\", msg.payload.temperature);\n            if (\"humidity\" in msg.payload)\n                global.set(\"humidity\", msg.payload.humidity);\n        }\n        break;\n\n    case \"pub/uvSensor\":\n        global.set(\"uv\", msg.payload.value);\n        break;\n\n    case \"pub/tiltSensor\":\n        global.set(\"tilt\", msg.payload.value);\n        break;\n\n    case \"pub/ultrasonicSensor\":\n        global.set(\"distance\", msg.payload.value);\n        break;\n    \n    default:\n        break;\n}\n\nmsg.payload = Object({\n    \"brightness\": global.get(\"brightness\"),\n    \"buttonState\": global.get(\"buttonState\"),\n    \"envLightRes\": global.get(\"envLightRes\"),\n    \"temperature\": global.get(\"temperature\"),\n    \"humidity\": global.get(\"humidity\"),\n    \"uv\": global.get(\"uv\"),\n    \"tilt\": global.get(\"tilt\"),\n    \"distance\": global.get(\"distance\"),\n});\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "// Code added here will be run once\n// whenever the node is started.\nglobal.set(\"potentioValue\", 0);\nglobal.set(\"buttonState\", 0); // 1: Clicked, 0: Not clicked\nglobal.set(\"brightness\", 0);\nglobal.set(\"temperature\", 0);\nglobal.set(\"humidity\", 0);\nglobal.set(\"uv\", 0);\nglobal.set(\"tilt\", 0);\nglobal.set(\"distance\", 0);",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 660,
+        "wires": [
+            [
+                "15841936dfa5316d",
+                "a103bd2443779fc2"
+            ]
+        ]
+    },
+    {
+        "id": "f4cb5b49bcd2b714",
+        "type": "json",
+        "z": "2db4c2eb33a80e37",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 410,
+        "y": 660,
+        "wires": [
+            [
+                "65eaa6ca499a4eb5"
+            ]
+        ]
+    },
+    {
+        "id": "e90b505b3b988da4",
+        "type": "comment",
+        "z": "2db4c2eb33a80e37",
+        "name": "Đọc note này nèee",
+        "info": "Dữ liệu được gửi đến từ <mqtt in> \ncần phải viết theo dạng JSON string\nđể sau khi qua node <json> thì sẽ được\nchuyển thành JavaScript Object. \nKhi qua node <function> kế thì \nsẽ được lưu vào biến toàn cục tương ứng\ndựa trên object được tạo.\nChi tiết cấu trúc JSON string thì đọc\nở node function xem switch case set những\ngiá trị gì.",
+        "x": 490,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "2142fb1c2cb7a24e",
+        "type": "http in",
+        "z": "2db4c2eb33a80e37",
+        "name": "",
+        "url": "/receiveData",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 240,
+        "wires": [
+            [
+                "15388a2dcb0c799b",
+                "d728c48416fbb9a8"
+            ]
+        ]
+    },
+    {
+        "id": "664266963948b6d1",
+        "type": "http response",
+        "z": "2db4c2eb33a80e37",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 530,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "15388a2dcb0c799b",
+        "type": "function",
+        "z": "2db4c2eb33a80e37",
+        "name": "return result",
+        "func": "msg.payload = \"Send data successful!\"\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 200,
+        "wires": [
+            [
+                "664266963948b6d1"
+            ]
+        ]
+    },
+    {
+        "id": "2737597ff8460c37",
+        "type": "mqtt out",
+        "z": "2db4c2eb33a80e37",
+        "name": "sub/button",
+        "topic": "sub/button",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e75c7701770fa460",
+        "x": 810,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "d728c48416fbb9a8",
+        "type": "function",
+        "z": "2db4c2eb33a80e37",
+        "name": "get message",
+        "func": "return msg.payload;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 280,
+        "wires": [
+            [
+                "63237f6e45552ea9"
+            ]
+        ]
+    },
+    {
+        "id": "e75c7701770fa460",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.emqx.io",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]

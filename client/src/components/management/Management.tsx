@@ -14,6 +14,7 @@ import bg_img from "../../assets/img/bg_img.jpg"
 import web_logo from "../../assets/img/logo.png"
 import AlarmLayer from "./AlarmLayer"
 import { listMessage, listMessage_add, listMessage_removeAll } from "./outputMessage"
+import { env } from "process"
 
 function Management() {
     const nav = useNavigate()
@@ -23,7 +24,9 @@ function Management() {
     const [humidity, setHumidity] = useState(40)
     const [uv, setUv] = useState(0)
     const [tilt, setTilt] = useState(1)
+    const [envLux, setEnvLux] = useState(0)
     const [brightness, setBrightness] = useState(255)
+
     const [distance, setDistance] = useState(255)
     
     const [rgbMsg, setRgbMsg] = useState<boolean | undefined>(false)
@@ -46,6 +49,11 @@ function Management() {
                 setTilt(data.tilt)
                 setBrightness(data.brightness)
                 setDistance(data.distance)
+
+                const photoresistorVoltage = data.brightness * 5 / 4096;
+                const photoresistorResistance = 10000 * (5 - photoresistorVoltage) / photoresistorVoltage;
+                const photoresistorLux = Math.pow(50000 * Math.pow(10, 0.7) / photoresistorResistance, 1 / 0.7);
+                setEnvLux(photoresistorLux)
             })
             .catch(error => console.error('Error:', error));
 
@@ -59,7 +67,9 @@ function Management() {
             .then(response => response.json())
             .then(data => data.deviceOption)
             .then(deviceOption => {
-                setRgbMsg(deviceOption.rgb)
+                if (envLux > 50) setRgbMsg(false)
+                else setRgbMsg(deviceOption.rgb)
+            
                 setNeopixelMsg(deviceOption.neopixel)
                 setLcdMsg(deviceOption.lcd)
                 setAutoOnC(deviceOption.autoOnC)
