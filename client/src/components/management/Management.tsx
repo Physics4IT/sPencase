@@ -47,8 +47,9 @@ function Management() {
                 setHumidity(data.humidity)
                 setUv(data.uv)
                 setTilt(data.tilt)
-                setBrightness(data.brightness)
                 setDistance(data.distance)
+
+                setBrightness(Math.round(data.brightness * 255 / 4096))
 
                 const photoresistorVoltage = data.brightness * 5 / 4096;
                 const photoresistorResistance = 10000 * (5 - photoresistorVoltage) / photoresistorVoltage;
@@ -176,8 +177,14 @@ function Management() {
                     setHumidity(data.humidity)
                     setUv(data.uv)
                     setTilt(data.tilt)
-                    setBrightness(data.brightness)
                     setDistance(data.distance)
+    
+                    setBrightness(Math.round(data.brightness * 255 / 4096))
+    
+                    const photoresistorVoltage = data.brightness * 5 / 4096;
+                    const photoresistorResistance = 10000 * (5 - photoresistorVoltage) / photoresistorVoltage;
+                    const photoresistorLux = Math.pow(50000 * Math.pow(10, 0.7) / photoresistorResistance, 1 / 0.7);
+                    setEnvLux(photoresistorLux)
 
                     let count = 0
                     let state = 0
