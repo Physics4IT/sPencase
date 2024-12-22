@@ -38,7 +38,7 @@ app.use(routes);
 // Auto fetch data from Node-RED
 setInterval(() => {
     updateDataRecord();
-}, 5000);
+}, 5000).unref();
 
 setInterval(async () => {
     await fetch('http://localhost:1880/receiveData', {

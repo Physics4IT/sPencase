@@ -17,7 +17,7 @@ async function connectDB() {
 
 async function updateDataRecord() {
     try {
-        await fetch("http://127.0.0.1:1880/data", {
+        await fetch("http://localhost:1880/data", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
