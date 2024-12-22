@@ -9,7 +9,7 @@ const int DELAY_TIME = 1000;
 
 const char *ssid = "Wokwi-GUEST";
 const char *password = "";
-// const char* mqttServer = "test.mosquitto.org";
+// const char* mqtt_broker = "test.mosquitto.org";
 const char *mqtt_broker = "broker.emqx.io";
 const char *mqtt_username = "emqx";
 const char *mqtt_password = "public";
@@ -49,6 +49,7 @@ void setup()
   setPhotoresistor();
   setServo();
   setUVS();
+  setVibramotor();
 
   client.setServer(mqtt_broker, port);
   // client.setServer(mqttServer, port);
@@ -60,7 +61,7 @@ void mqttReconnect()
   while (!client.connected())
   {
     Serial.print("Attempting MQTT connection...");
-    if (client.connect("sPencaseCLC06"), mqtt_username, mqtt_password)
+    if (client.connect("sPencase22LC06", mqtt_username, mqtt_password))
     {
       Serial.println(" connected");
       client.subscribe("sub/rgb");
@@ -114,7 +115,10 @@ void callback(char *topic, byte *message, unsigned int length)
   }
   else if (strcmp(topic, "sub/neopixel") == 0)
   {
-    (strMsg == "on") ? active_mode_neo(strMsg) : active_mode_neo();
+    if (strMsg[0] == '1') change_mode_neo2(strMsg[2]);
+    else {
+      (strMsg == "on") ? change_mode_neo2('6') : active_mode_neo();
+    }
   }
   else if (strcmp(topic, "sub/servo") == 0)
   {
@@ -122,13 +126,26 @@ void callback(char *topic, byte *message, unsigned int length)
   }
   else if (strcmp(topic, "sub/sevenSegment") == 0)
   {
+    display7segment(strMsg);
+
+    String tempMsg = "";
+    if (strMsg.length() == 4) tempMsg += strMsg.substring(0, 2) + ':' + strMsg.substring(2);
+    else if (strMsg.length() == 3) tempMsg += '0' + strMsg.substring(0, 1) + ':' + strMsg.substring(1);
+    
+    if (compareAlarm(tempMsg)) buzzer_switch_song('1');
+    else buzzer_off();
   }
   else if (strcmp(topic, "sub/buzzer") == 0)
   {
-    ((char)message[0] == '0') ? buzzer_off() : buzzer_switch_song((char)message[0]);
+    if (strMsg[0] == '1') {
+      handleAddAlarm(strMsg.substring(2));
+    } else {
+      (strMsg == "off") ? buzzer_off() : buzzer_switch_song('1');
+    }
   }
   else if (strcmp(topic, "sub/vibration") == 0)
   {
+    (strMsg == "on") ? vibrate(true) : vibrate(false);
   }
   else if (strcmp(topic, "sub/button") == 0)
   {
@@ -152,30 +169,22 @@ void loop()
 
   mode_7color();
   mode_63color();
-
   neo_switch_mode();
-  displayTime(); // DEBUG ONLY, DELETE WHEN DONE
 
   String buffer_dht = readDHT();
   String buffer_ultrasonic = readUltrasonic();
   String buffer_tilt = readTiltSensor();
-  // String btnState = readButton();
+  String btnState = readButton();
   String buffer_pot = readPotentiometer();
   String buffer_photo = readPhotoresistor();
   String buffer_uvs = readUVS();
 
-  // Serial.println(buffer_tilt);
-  // Serial.println(buffer_pot);
-  // Serial.println(buffer_photo);
-  Serial.println(buffer_uvs);
-
   client.publish("pub/potentiometer", buffer_pot.c_str());
-  // client.publish("pub/button", btnState.c_str());
+  client.publish("pub/button", btnState.c_str());
   client.publish("pub/photoresistor", buffer_photo.c_str());
   client.publish("pub/dht", buffer_dht.c_str());
   client.publish("pub/uvSensor", buffer_uvs.c_str());
-  // client.publish("pub/tiltSensor", buffer_tilt.c_str());
+  client.publish("pub/tiltSensor", buffer_tilt.c_str());
   client.publish("pub/ultrasonicSensor", buffer_ultrasonic.c_str());
-
   delay(500);
 }

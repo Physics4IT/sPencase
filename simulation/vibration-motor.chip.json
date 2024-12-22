@@ -1,0 +1,13 @@
+{
+  "name": "vibration-motor",
+  "author": "Ronald Jamison",
+  "pins": [
+    "",
+    "OUT",
+    "",
+    "VCC",
+    "GND",
+    "IN"
+  ],
+  "controls": []
+}

@@ -1,24 +1,24 @@
-// Wokwi Custom Chip - For information and examples see:
-// https://link.wokwi.com/custom-chips-alpha
+// Wokwi Custom Chip - For docs and examples see:
+// https://docs.wokwi.com/chips-api/getting-started
 //
 // SPDX-License-Identifier: MIT
-// Copyright (C) 2022 Uri Shaked / wokwi.com
+// Copyright 2023 Ronald Jamison
 
 #include "wokwi-api.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 typedef struct {
-  pin_t pin_sig;
-  uint32_t uv_attr;
+  pin_t pin_in;
+  pin_t pin_out;
 } chip_state_t;
 
 static void chip_timer_event(void *user_data);
 
-void chip_init(void) {
+void chip_init() {
   chip_state_t *chip = malloc(sizeof(chip_state_t));
-  chip->pin_sig = pin_init("SIG", ANALOG);
-  chip->uv_attr = attr_init_float("value", 0.0);
+  chip->pin_in = pin_init("IN", INPUT);
+  chip->pin_out = pin_init("OUT", OUTPUT);
 
   const timer_config_t timer_config = {
     .callback = chip_timer_event,
@@ -30,6 +30,7 @@ void chip_init(void) {
 
 void chip_timer_event(void *user_data) {
   chip_state_t *chip = (chip_state_t*)user_data;
-  float uv = attr_read_float(chip->uv_attr) / 819;
-  pin_dac_write(chip->pin_sig, uv);
+  int value = pin_read(chip->pin_in);
+  printf("%d", value);
+  pin_write(chip->pin_out, value);
 }

@@ -1,12 +1,11 @@
 #include <LiquidCrystal_I2C.h>
 
-LiquidCrystal_I2C lcd(0x27,16,2); 
 String temperature = "", humidity = "";
+LiquidCrystal_I2C lcd(0x27,16,2); 
 
 void setLcd() {
-  Wire.begin(21, 22);
-  lcd.init();                    
-  lcd.backlight();
+  Wire.begin(21, 22, 10000);
+  lcd.init();
 }
 
 void backlight_on() {

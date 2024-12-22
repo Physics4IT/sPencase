@@ -4,12 +4,12 @@
 # Automatically added based on includes:
 Adafruit NeoPixel
 
-LiquidCrystal I2C
 PubSubClient
-WiFi
 DHT sensor library
 Adafruit MPU6050
 ESP32Servo
 MPU6050_light
 MPU6050
 TM1637
+LiquidCrystal I2C
+NewPing

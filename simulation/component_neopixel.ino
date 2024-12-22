@@ -23,6 +23,11 @@ void change_mode_neo() {
   neo_restart_point = neo_cur_pixel % NUMPIXELS;
 }
 
+void change_mode_neo2(char mode) {
+  on_neomulti_color = mode - '0';
+  neo_restart_point = neo_cur_pixel % NUMPIXELS;
+}
+ 
 void neomode_off() {
   strip.clear();
   on_neomulti_color = 0;

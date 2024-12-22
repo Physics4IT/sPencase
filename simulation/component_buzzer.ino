@@ -1,9 +1,28 @@
 const int BUZZER = 16;
 unsigned long buzzer_prevTime = 0;
 bool on_sounding = false;
+String alarmList[20] = {};
+int alarmLength = 0;
 
 void setBuzzer() {
   pinMode(BUZZER, OUTPUT);
+}
+
+void handleAddAlarm(String msg) {
+  alarmLength = msg.length() / 5;
+  for (int i = 0; i < alarmLength; i++) {
+    alarmList[i] = msg.substring(i * 5, (i + 1) * 5);
+    Serial.println(alarmList[i]);
+  }
+}
+
+bool compareAlarm(String msg) {
+  for (int i = 0; i < alarmLength; i++) {
+    if (alarmList[i] == msg) {
+      return true;
+    }
+  }
+  return false;
 }
 
 void buzzer_off() {
@@ -11,7 +30,7 @@ void buzzer_off() {
 }
 
 void no_song() {
-  if (on_sounding && millis() - buzzer_prevTime > 100000) {
+  if (on_sounding && millis() - buzzer_prevTime > 5000) {
     noTone(BUZZER);
     buzzer_prevTime = millis();
     on_sounding = false;

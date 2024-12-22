@@ -1,5 +1,5 @@
-// TRIG: phat tin hieu
-// ECHO: thu tin hieu
+// TRIG: phát tín hiệu
+// ECHO: thu tín hiệu
 const int TRIGPIN = 26;
 const int ECHOPIN = 25;
 
