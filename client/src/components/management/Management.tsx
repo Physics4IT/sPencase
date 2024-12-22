@@ -280,6 +280,8 @@ function Management() {
     }
 
     const handleHideAlarm = () => {
+        setSendData(true)
+        
         const layer = document.getElementById("layer-alarm")
         if (layer) layer.style.display = "none"
     }

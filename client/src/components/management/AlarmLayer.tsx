@@ -1,6 +1,7 @@
 import { AlarmClockPlus, CircleMinus } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { Input } from "../ui/input"
+import { listMessage_add } from "./outputMessage"
 
 export type alarmData = {
     _id?: string
@@ -106,15 +107,27 @@ function AlarmLayer({
         return true
     }
 
-    const removeDuplicates = (array: listAlarm) => {
+    const prevHideLayer = (array: listAlarm) => {
         const seen = new Set()
-        return array ? array.filter(obj => {
+        const newArray = array ? array.filter(obj => {
             if (!(obj.state)) return false
             const key = `${obj.hour}:${obj.minute}`
             if (seen.has(key)) return false
             seen.add(key)
             return true
         }) : []
+
+        let stringMsg = "1 "
+        newArray.map((alarm) => {
+            stringMsg += alarm.hour.toString().padStart(2, '0') + ":" + alarm.minute.toString().padStart(2, '0')
+        })
+
+        listMessage_add({
+            topic: "sub/buzzer",
+            payload: stringMsg
+        })
+
+        HideAlarm()
     };
 
     useEffect(() => {
@@ -211,7 +224,7 @@ function AlarmLayer({
                 </div>
 
                 <div className="layer-row">
-                    <div className="layer-acc-exit" onClick={() => HideAlarm()}>Thoát</div>
+                    <div className="layer-acc-exit" onClick={() => prevHideLayer(data)}>Thoát</div>
                 </div>
             </div>
         </div>
