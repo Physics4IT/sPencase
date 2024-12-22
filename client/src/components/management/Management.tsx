@@ -14,7 +14,7 @@ import bg_img from "../../assets/img/bg_img.jpg"
 import web_logo from "../../assets/img/logo.png"
 import AlarmLayer from "./AlarmLayer"
 import { listMessage, listMessage_add, listMessage_removeAll } from "./outputMessage"
-import { env } from "process"
+import { getPhoneTime, setPhoneTime } from "./sendPhoneTime"
 
 function Management() {
     const nav = useNavigate()
@@ -178,34 +178,56 @@ function Management() {
                     setTilt(data.tilt)
                     setBrightness(data.brightness)
                     setDistance(data.distance)
+
+                    let count = 0
+                    let state = 0
                     
-                    // if (Date.now() - getPhoneTime() > 60000) {
-                    //     if (data.temperature > 35) {
-                    //         listMessage_add({
-                    //             topic: "phoneMsg",
-                    //             payload: "Nhiệt độ đang ở mức cao!: " + String(data.temperature) + " độ C" 
-                    //         })
-                    //     }
-                    //     if (data.humidity < 20 || data.humidity > 80) {
-                    //         listMessage_add({
-                    //             topic: "phoneMsg",
-                    //             payload: "Độ ẩm đang bất thường!: " + String(data.humidity) + "%"
-                    //         })
-                    //     }
-                    //     if (data.uv > 8) {
-                    //         listMessage_add({
-                    //             topic: "phoneMsg",
-                    //             payload: "Cường độ tia UV đang rất cao!: " + String(data.uv) + " mW/cm2"
-                    //         })
-                    //     }
-                    //     if (data.tilt > 2) {
-                    //         listMessage_add({
-                    //             topic: "phoneMsg",
-                    //             payload: "Thiết bị đang bị rung lắc mạnh!"
-                    //         })
-                    //     }
-                    //     setPhoneTime(Date.now())
-                    // }
+                    if (Date.now() - getPhoneTime() > 60000) {
+                        if (data.temperature > 35) {
+                            // listMessage_add({
+                            //     topic: "phoneMsg",
+                            //     payload: "Nhiệt độ đang ở mức cao!: " + String(data.temperature) + " độ C" 
+                            // })
+                            count++
+                            state = 1
+                        }
+                        if (data.humidity < 20 || data.humidity > 80) {
+                            // listMessage_add({
+                            //     topic: "phoneMsg",
+                            //     payload: "Độ ẩm đang bất thường!: " + String(data.humidity) + "%"
+                            // })
+                            count++
+                            state = 2
+                        }
+                        if (data.uv > 8) {
+                            listMessage_add({
+                                topic: "phoneMsg",
+                                payload: "Cường độ tia UV đang rất cao!: " + String(data.uv) + " mW/cm2"
+                            })
+                            count++
+                            state = 3
+                        }
+                        if (data.tilt > 0) {
+                            listMessage_add({
+                                topic: "phoneMsg",
+                                payload: "Thiết bị đang bị rung lắc mạnh!"
+                            })
+                            count++
+                            state = 4
+                        }
+                        if (count > 1) {
+                            listMessage_add({
+                                topic: "sub/neopixel",
+                                payload: "1 5"
+                            })
+                        } else if (count == 1) {
+                            listMessage_add({
+                                topic: "sub/neopixel",
+                                payload: "1 " + state.toString()
+                            })
+                        }
+                        setPhoneTime(Date.now())
+                    }
                     setSendData(true)
                     return data
                 })
@@ -413,8 +435,8 @@ function Management() {
                                 <p className="info-value">{uv}</p>
                             </div>
                             <div className="info-frame-row h-14 my-3">
-                                <p className="info-name-row">Độ nghiêng</p>
-                                <p className="info-value">{tilt}</p>
+                                <p className="info-name-row">Rung lắc</p>
+                                <p className="info-value">{tilt == 1? "Có" : "Không"}</p>
                             </div>
                             <div className="info-frame-row h-14 mt-3">
                                 <p className="info-name-row">Cường độ đèn</p>
